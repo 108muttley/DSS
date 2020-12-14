@@ -1,28 +1,43 @@
+import java.util.*;
+
+
 public class Robot {
-    private GPS localizacao;
-    private Boolean livre;
+    private boolean livre;
     private Palete pal;
+    private GPS loc;
+
+    public Robot(GPS localizacao, boolean livre, Palete pal) {
+        setLocalizacao(localizacao);
+        setLivre(livre);
+        setPal(pal);
+    }
+
+    public Robot(){
+        setLocalizacao(new GPS());
+        setLivre(true);
+        setPal(null);
+    }    private GPS localizacao;
 
 
-    public Robot(GPS localizacao, Boolean livre, Palete pal) {
-        this.localizacao = localizacao;
-        this.livre = livre;
-        this.pal = pal;
+    public Robot(Robot r){
+        setLocalizacao(r.getLocalizacao());
+        setLivre(r.getLivre());
+        setPal(r.getPal());
     }
 
     public GPS getLocalizacao() {
-        return localizacao;
+        return this.loc;
     }
 
     public void setLocalizacao(GPS localizacao) {
-        this.localizacao = localizacao;
+        this.loc = localizacao;
     }
 
-    public Boolean getLivre() {
+    public boolean getLivre() {
         return livre;
     }
 
-    public void setLivre(Boolean livre) {
+    public void setLivre(boolean livre) {
         this.livre = livre;
     }
 
@@ -30,7 +45,7 @@ public class Robot {
         return pal;
     }
 
-    public void setPal(Palete pal) {
-        this.pal = pal;
+    public void setPal(Palete p) {
+        this.pal = p;
     }
 }
