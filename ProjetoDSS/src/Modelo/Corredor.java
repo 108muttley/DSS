@@ -3,6 +3,8 @@ package Modelo;
 import java.util.HashMap;
 import java.util.Map;
 
+//CLASSE DESNECESSÁRIA
+
 public class Corredor {
     private String idCorredor;
     private Map<Integer ,Prateleira> prateleiras;
