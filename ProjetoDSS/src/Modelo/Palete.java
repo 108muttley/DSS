@@ -1,28 +1,31 @@
 package Modelo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Palete {
     private String codPalete;
-    private GPS loc;
-    private Material m;
+    private String localizacao; //localização da prateleira/robot
+    private String material;
     private float preco;
-    private String emPrateleira;
+    private List<String> listaDeMateriais;
 
-
-    public Palete(String codPalete, GPS loc, Material m, float preco, String emPrateleira ) {
+    public Palete(String codPalete, String localizacao, String material, float preco, List<String> listaDeMateriais) {
         this.codPalete = codPalete;
-        this.loc = loc;
-        this.m = m;
+        this.localizacao = localizacao;
+        this.material = material;
         this.preco = preco;
-        this.emPrateleira = emPrateleira;
+        this.listaDeMateriais = listaDeMateriais;
     }
 
 
     public Palete() {
         this.codPalete = "";
-        this.loc = new GPS();
-        this.m = new Material();
+        this.localizacao = "";
+        this.material = "";
         this.preco = 0;
-        this.emPrateleira = "";
+        this.listaDeMateriais = new ArrayList<>();
+
     }
 
     public Palete(Palete p) {
@@ -30,7 +33,7 @@ public class Palete {
         setLoc(p.getLoc());
         setM(p.getM());
         setPreco(p.getPreco());
-        setEmPrateleira(p.getEmPrateleira());
+        setListaDeMateriais(p.getListaDeMateriais());
 
     }
 
@@ -43,20 +46,20 @@ public class Palete {
         this.codPalete = codPalete;
     }
 
-    public GPS getLoc() {
-        return loc;
+    public String getLoc() {
+        return localizacao;
     }
 
-    public void setLoc(GPS loc) {
-        this.loc = loc;
+    public void setLoc(String loc) {
+        this.localizacao = loc;
     }
 
-    public Material getM() {
-        return m;
+    public String getM() {
+        return material;
     }
 
-    public void setM(Material m) {
-        this.m = m;
+    public void setM(String material) {
+        this.material = material;
     }
 
     public float getPreco() {
@@ -67,11 +70,14 @@ public class Palete {
         this.preco = preco;
     }
 
-    public String getEmPrateleira() {
-        return emPrateleira;
+    public List<String> getListaDeMateriais() {
+        List<String> novo = new ArrayList<>();
+        for (String s : this.listaDeMateriais)
+            novo.add(s);
+        return novo;
     }
 
-    public void setEmPrateleira(String emPrateleira) {
-        this.emPrateleira = emPrateleira;
+    public void setListaDeMateriais(List<String> list){
+        this.listaDeMateriais = list;
     }
 }
