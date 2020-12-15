@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="39b611b1-8c84-4166-a60a-b4dd8d65f6ac" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/Corredor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Material.java" afterDir="false" />
+    <list default="true" id="39b611b1-8c84-4166-a60a-b4dd8d65f6ac" name="Default Changelist" comment="mais classes">
+      <change afterPath="$PROJECT_DIR$/src/Modelo/Corredor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Modelo/Prateleira.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Palete.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Palete.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Robot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Robot.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Corredor.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GPS.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modelo/GPS.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Material.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modelo/Material.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Palete.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modelo/Palete.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Robot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Modelo/Robot.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,8 +68,16 @@
       <option name="presentableId" value="Default" />
       <updated>1607894165556</updated>
       <workItem from="1607894166898" duration="1764000" />
-      <workItem from="1607984115827" duration="2989000" />
+      <workItem from="1607984115827" duration="5803000" />
     </task>
+    <task id="LOCAL-00001" summary="mais classes">
+      <created>1607987175143</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1607987175143</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -83,5 +94,9 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="mais classes" />
+    <option name="LAST_COMMIT_MESSAGE" value="mais classes" />
   </component>
 </project>

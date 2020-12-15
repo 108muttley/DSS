@@ -1,15 +1,19 @@
+package Modelo;
+
 public class Palete {
     private String codPalete;
     private GPS loc;
     private Material m;
     private float preco;
+    private String emPrateleira;
 
 
-    public Palete(String codPalete, GPS loc, Material m, float preco) {
+    public Palete(String codPalete, GPS loc, Material m, float preco, String emPrateleira ) {
         this.codPalete = codPalete;
         this.loc = loc;
         this.m = m;
         this.preco = preco;
+        this.emPrateleira = emPrateleira;
     }
 
 
@@ -18,6 +22,7 @@ public class Palete {
         this.loc = new GPS();
         this.m = new Material();
         this.preco = 0;
+        this.emPrateleira = "";
     }
 
     public Palete(Palete p) {
@@ -25,6 +30,8 @@ public class Palete {
         setLoc(p.getLoc());
         setM(p.getM());
         setPreco(p.getPreco());
+        setEmPrateleira(p.getEmPrateleira());
+
     }
 
 
@@ -58,5 +65,13 @@ public class Palete {
 
     public void setPreco(float preco) {
         this.preco = preco;
+    }
+
+    public String getEmPrateleira() {
+        return emPrateleira;
+    }
+
+    public void setEmPrateleira(String emPrateleira) {
+        this.emPrateleira = emPrateleira;
     }
 }

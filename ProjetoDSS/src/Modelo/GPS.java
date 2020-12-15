@@ -1,4 +1,4 @@
-import java.util.Objects;
+package Modelo;
 
 public class GPS {
     private int x;
@@ -46,7 +46,7 @@ public class GPS {
 
     @Override
     public String toString() {
-        return "GPS{" +
+        return "Modelo.GPS{" +
                 "x=" + x +
                 ", y=" + y +
                 '}';
