@@ -11,6 +11,8 @@ public class Teste {
         s.addPaleteWaitingForReading(new RawPalete("ola","bom",23, l));
         s.addPaleteWaitingForReading(new RawPalete("foda-se","mau",23,l));
 
-        s.run();
+
+        s.teste();
+        //s.run();
     }
 }

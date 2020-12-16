@@ -10,8 +10,8 @@ public class Sistema {
     private LeitorQrCode leitor;
 
 
-    //private List<GPS> mapa;
-    private Map<GPS, List<GPS>> mapa;
+    private List<GPS> mapa;
+    //private Map<GPS, List<GPS>> mapa;
 
 
 
@@ -51,6 +51,10 @@ public class Sistema {
     }
     public void run(){
         this.leitor.run();
+    }
+
+    public void teste(){
+        GPS.criaCaminho(mapa,new GPS(26,5),new GPS(26,0));
     }
 
 }
