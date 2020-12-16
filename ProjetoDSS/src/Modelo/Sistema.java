@@ -2,13 +2,16 @@ package Modelo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Sistema {
     private List<Object> paletesWaitingForReading;
     private List<Palete> paletesWaitingForDelivering;
     private LeitorQrCode leitor;
 
-    private List<GPS> mapa;
+
+    //private List<GPS> mapa;
+    private Map<GPS, List<GPS>> mapa;
 
 
 
@@ -17,6 +20,7 @@ public class Sistema {
         this.paletesWaitingForDelivering = new ArrayList<>();
         this.leitor = new LeitorQrCode(this);
         this.mapa = GPS.criaMapa();
+        //this.mapa = GPS.criaMapa();
     }
 
     public void addPaleteWaitingForReading(Object o){
