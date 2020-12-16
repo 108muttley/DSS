@@ -23,7 +23,7 @@ public class LeitorQrCode {
         while(true) {
             while ((o = sistema.getPaleteWaitingForReading()) != null) {
                 RawPalete rp = (RawPalete) o;
-                Palete p = new Palete(rp.getCodigo(), "rececao", rp.getMaterial(), rp.getPreco(), rp.getListaDeMateriais());
+                Palete p = new Palete(rp.getCodigo(), "0-0", rp.getMaterial(), rp.getPreco(), rp.getListaDeMateriais());
                 this.comunicaNovaPalete(p);
                 System.out.println("E vai uma");
             }

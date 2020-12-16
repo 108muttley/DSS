@@ -2,35 +2,39 @@ package Modelo;
 
 
 public class Robot {
+    private String codRobot;
     private boolean livre;
-    private Palete pal;
-    private GPS loc;
+    private Palete palete;
+    private GPS localizacao;
 
-    public Robot(GPS localizacao, boolean livre, Palete pal) {
+    public Robot(String codRobot,GPS localizacao, boolean livre, Palete pal) {
+        this.codRobot = codRobot;
         setLocalizacao(localizacao);
         setLivre(livre);
         setPal(pal);
     }
 
     public Robot(){
+        this.codRobot = "";
         setLocalizacao(new GPS());
         setLivre(true);
         setPal(null);
-    }    private GPS localizacao;
+    }
 
 
     public Robot(Robot r){
+        this.codRobot = r.getCod();
         setLocalizacao(r.getLocalizacao());
         setLivre(r.getLivre());
         setPal(r.getPal());
     }
 
     public GPS getLocalizacao() {
-        return this.loc;
+        return this.localizacao;
     }
 
     public void setLocalizacao(GPS localizacao) {
-        this.loc = localizacao;
+        this.localizacao = localizacao;
     }
 
     public boolean getLivre() {
@@ -42,10 +46,14 @@ public class Robot {
     }
 
     public Palete getPal() {
-        return pal;
+        return palete;
     }
 
     public void setPal(Palete p) {
-        this.pal = p;
+        this.palete = p;
+    }
+
+    public String getCod(){
+        return this.codRobot;
     }
 }

@@ -5,15 +5,18 @@ import java.util.List;
 
 public class Sistema {
     private List<Object> paletesWaitingForReading;
-    private int lidos;
     private List<Palete> paletesWaitingForDelivering;
     private LeitorQrCode leitor;
+
+    private List<GPS> mapa;
+
+
 
     public Sistema(){
         this.paletesWaitingForReading = new ArrayList<>();
         this.paletesWaitingForDelivering = new ArrayList<>();
         this.leitor = new LeitorQrCode(this);
-        this.lidos = 0;
+        this.mapa = GPS.criaMapa();
     }
 
     public void addPaleteWaitingForReading(Object o){
