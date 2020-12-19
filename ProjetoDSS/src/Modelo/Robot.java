@@ -11,14 +11,14 @@ public class Robot {
         this.codRobot = codRobot;
         setLocalizacao(localizacao);
         setLivre(livre);
-        setPal(pal);
+        setPalete(pal);
     }
 
     public Robot(){
         this.codRobot = "";
         setLocalizacao(new GPS());
         setLivre(true);
-        setPal(null);
+        setPalete(null);
     }
 
 
@@ -26,7 +26,7 @@ public class Robot {
         this.codRobot = r.getCod();
         setLocalizacao(r.getLocalizacao());
         setLivre(r.getLivre());
-        setPal(r.getPal());
+        setPalete(r.getPalete());
     }
 
     public GPS getLocalizacao() {
@@ -45,15 +45,16 @@ public class Robot {
         this.livre = livre;
     }
 
-    public Palete getPal() {
+    public Palete getPalete() {
         return palete;
     }
 
-    public void setPal(Palete p) {
+    public void setPalete(Palete p) {
         this.palete = p;
     }
 
     public String getCod(){
         return this.codRobot;
     }
+
 }

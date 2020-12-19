@@ -3,13 +3,13 @@ package Modelo;
 public class Prateleira {
     private String codPrateleira;
     private boolean disponibilidade;
-    private Palete p;
+    private Palete palete;
     private GPS localizacao;
 
     public Prateleira(String codPrateleira, boolean disponibilidade, Palete p, GPS localizacao) {
         this.codPrateleira = codPrateleira;
         this.disponibilidade = disponibilidade;
-        this.p = p;
+        this.palete = p;
         this.localizacao = localizacao;
     }
 
@@ -30,11 +30,11 @@ public class Prateleira {
     }
 
     public Palete getP() {
-        return p;
+        return palete;
     }
 
     public void setP(Palete p) {
-        this.p = p;
+        this.palete = p;
     }
 
     public GPS getLocalizacao() {
