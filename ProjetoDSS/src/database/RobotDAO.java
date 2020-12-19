@@ -3,10 +3,7 @@ package database;
 import Modelo.Robot;
 
 import java.sql.*;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class RobotDAO implements Map<String, Robot> {
     private static RobotDAO st = null;
@@ -14,11 +11,12 @@ public class RobotDAO implements Map<String, Robot> {
     private RobotDAO() {
         try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
              Statement stm = conn.createStatement()){
-                String sql = "CREATE TABLE IF NOT EXISTS Robot ("+
-                                "codRobot varchar(6) NOT NULL,"+
-                                "localizacao varchar(3) NOT NULL,"+
-                                "disponibilidade TINYINT NOT NULL,"+
+                String sql = "CREATE TABLE IF NOT EXISTS Robot (" +
+                                "codRobot varchar(6) NOT NULL," +
+                                "localizacao varchar(3) NOT NULL," +
+                                "disponibilidade TINYINT NOT NULL," +
                                 "PRIMARY KEY (codRobot))";
+                stm.executeUpdate(sql);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -39,7 +37,6 @@ public class RobotDAO implements Map<String, Robot> {
             }
         }
         catch (Exception e) {
-            // Erro a criar tabela...
             e.printStackTrace();
             throw new NullPointerException(e.getMessage());
         }
@@ -70,7 +67,18 @@ public class RobotDAO implements Map<String, Robot> {
 
     @Override
     public Robot get(Object key) {
-        return null;
+        Robot r = null;
+        try(Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery("SELECT * FROM Robot WHERE codRobot = '"+key.toString()+"' ")) {
+                if(rs.next()){
+                    // Ver construtor por causa da localização GPS e do boolean de disponibilidade
+                   // r = new Robot(rs.getString("codRobot"),);
+                }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return r;
     }
 
     @Override
@@ -80,7 +88,14 @@ public class RobotDAO implements Map<String, Robot> {
 
     @Override
     public Robot remove(Object key) {
-        return null;
+        Robot r = this.get(key);
+        try(Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
+            Statement stm = conn.createStatement();) {
+                stm.executeUpdate("DELETE FROM Robot WHERE codRobot = '"+key.toString()+"'");
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return r;
     }
 
     @Override
@@ -92,7 +107,6 @@ public class RobotDAO implements Map<String, Robot> {
     public void clear() {
         try(Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
                 Statement stm = conn.createStatement()){
-                    stm.execute("UPDATE Robot SET Robot=NULL");
                     stm.execute("TRUNCATE Robot");
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -101,7 +115,18 @@ public class RobotDAO implements Map<String, Robot> {
 
     @Override
     public Set<String> keySet() {
-        return null;
+        Set<String> res = new HashSet<>();
+        try(Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery("SELECT codRobot FROM Robot");) {
+            while(rs.next()){
+                String idt = rs.getString("codRobot");
+                res.add(idt);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return res;
     }
 
     @Override

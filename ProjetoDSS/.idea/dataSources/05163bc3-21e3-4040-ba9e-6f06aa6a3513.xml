@@ -941,255 +941,276 @@ SELECT|sys.sys_config
     <table id="295" parent="2" name="pais"/>
     <table id="296" parent="2" name="posicao"/>
     <table id="297" parent="2" name="tipocromo"/>
-    <column id="298" parent="291" name="id">
+    <table id="298" parent="9" name="robot"/>
+    <column id="299" parent="291" name="id">
       <Position>1</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="299" parent="291" name="tipo">
+    <column id="300" parent="291" name="tipo">
       <Position>2</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="300" parent="291" name="jogador">
+    <column id="301" parent="291" name="jogador">
       <Position>3</Position>
       <DataType>int|0s</DataType>
     </column>
-    <column id="301" parent="291" name="pagCaderneta">
+    <column id="302" parent="291" name="pagCaderneta">
       <Position>4</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="302" parent="291" name="descricao">
+    <column id="303" parent="291" name="descricao">
       <Position>5</Position>
       <DataType>text|0s</DataType>
     </column>
-    <column id="303" parent="291" name="adquirido">
+    <column id="304" parent="291" name="adquirido">
       <Position>6</Position>
       <DataType>char(1)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="304" parent="291" name="tipo">
+    <index id="305" parent="291" name="tipo">
       <ColNames>tipo</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="305" parent="291" name="jogador">
+    <index id="306" parent="291" name="jogador">
       <ColNames>jogador</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="306" parent="291" name="PRIMARY">
+    <key id="307" parent="291" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="307" parent="291" name="cromo_ibfk_1">
+    <foreign-key id="308" parent="291" name="cromo_ibfk_1">
       <ColNames>tipo</ColNames>
       <RefTableName>tipocromo</RefTableName>
       <RefColNames>nr</RefColNames>
     </foreign-key>
-    <foreign-key id="308" parent="291" name="cromo_ibfk_2">
+    <foreign-key id="309" parent="291" name="cromo_ibfk_2">
       <ColNames>jogador</ColNames>
       <RefTableName>jogador</RefTableName>
       <RefColNames>nr</RefColNames>
     </foreign-key>
-    <column id="309" parent="292" name="id">
+    <column id="310" parent="292" name="id">
       <Position>1</Position>
       <DataType>char(3)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="310" parent="292" name="designacao">
+    <column id="311" parent="292" name="designacao">
       <Position>2</Position>
       <DataType>varchar(45)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="311" parent="292" name="localidade">
+    <column id="312" parent="292" name="localidade">
       <Position>3</Position>
       <DataType>char(3)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="312" parent="292" name="treinador">
+    <column id="313" parent="292" name="treinador">
       <Position>4</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="313" parent="292" name="anoFundacao">
+    <column id="314" parent="292" name="anoFundacao">
       <Position>5</Position>
       <DataType>int|0s</DataType>
     </column>
-    <column id="314" parent="292" name="estadio">
+    <column id="315" parent="292" name="estadio">
       <Position>6</Position>
       <DataType>varchar(50)|0s</DataType>
     </column>
-    <column id="315" parent="292" name="presidente">
+    <column id="316" parent="292" name="presidente">
       <Position>7</Position>
       <DataType>varchar(50)|0s</DataType>
     </column>
-    <column id="316" parent="292" name="url">
+    <column id="317" parent="292" name="url">
       <Position>8</Position>
       <DataType>varchar(150)|0s</DataType>
     </column>
-    <column id="317" parent="292" name="observacoes">
+    <column id="318" parent="292" name="observacoes">
       <Position>9</Position>
       <DataType>text|0s</DataType>
     </column>
-    <index id="318" parent="292" name="localidade">
+    <index id="319" parent="292" name="localidade">
       <ColNames>localidade</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="319" parent="292" name="PRIMARY">
+    <key id="320" parent="292" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="320" parent="292" name="equipa_ibfk_1">
+    <foreign-key id="321" parent="292" name="equipa_ibfk_1">
       <ColNames>localidade</ColNames>
       <RefTableName>localidade</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="321" parent="293" name="nr">
+    <column id="322" parent="293" name="nr">
       <Position>1</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="322" parent="293" name="nome">
+    <column id="323" parent="293" name="nome">
       <Position>2</Position>
       <DataType>varchar(75)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="323" parent="293" name="equipa">
+    <column id="324" parent="293" name="equipa">
       <Position>3</Position>
       <DataType>char(3)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="324" parent="293" name="posicao">
+    <column id="325" parent="293" name="posicao">
       <Position>4</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="325" parent="293" name="dataNascimento">
+    <column id="326" parent="293" name="dataNascimento">
       <Position>5</Position>
       <DataType>date|0s</DataType>
     </column>
-    <column id="326" parent="293" name="localNascimento">
+    <column id="327" parent="293" name="localNascimento">
       <Position>6</Position>
       <DataType>char(3)|0s</DataType>
     </column>
-    <column id="327" parent="293" name="altura">
+    <column id="328" parent="293" name="altura">
       <Position>7</Position>
       <DataType>decimal(6,2 digit)|0s</DataType>
     </column>
-    <column id="328" parent="293" name="peso">
+    <column id="329" parent="293" name="peso">
       <Position>8</Position>
       <DataType>decimal(6,2 digit)|0s</DataType>
     </column>
-    <column id="329" parent="293" name="observacoes">
+    <column id="330" parent="293" name="observacoes">
       <Position>9</Position>
       <DataType>text|0s</DataType>
     </column>
-    <index id="330" parent="293" name="equipa">
+    <index id="331" parent="293" name="equipa">
       <ColNames>equipa</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="331" parent="293" name="posicao">
+    <index id="332" parent="293" name="posicao">
       <ColNames>posicao</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="332" parent="293" name="localNascimento">
+    <index id="333" parent="293" name="localNascimento">
       <ColNames>localNascimento</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="333" parent="293" name="PRIMARY">
+    <key id="334" parent="293" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>nr</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="334" parent="293" name="jogador_ibfk_1">
+    <foreign-key id="335" parent="293" name="jogador_ibfk_1">
       <ColNames>equipa</ColNames>
       <RefTableName>equipa</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <foreign-key id="335" parent="293" name="jogador_ibfk_2">
+    <foreign-key id="336" parent="293" name="jogador_ibfk_2">
       <ColNames>posicao</ColNames>
       <RefTableName>posicao</RefTableName>
       <RefColNames>nr</RefColNames>
     </foreign-key>
-    <foreign-key id="336" parent="293" name="jogador_ibfk_3">
+    <foreign-key id="337" parent="293" name="jogador_ibfk_3">
       <ColNames>localNascimento</ColNames>
       <RefTableName>localidade</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="337" parent="294" name="id">
+    <column id="338" parent="294" name="id">
       <Position>1</Position>
       <DataType>char(3)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="338" parent="294" name="designacao">
+    <column id="339" parent="294" name="designacao">
       <Position>2</Position>
       <DataType>varchar(75)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="339" parent="294" name="pais">
+    <column id="340" parent="294" name="pais">
       <Position>3</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="340" parent="294" name="pais">
+    <index id="341" parent="294" name="pais">
       <ColNames>pais</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="341" parent="294" name="PRIMARY">
+    <key id="342" parent="294" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="342" parent="294" name="localidade_ibfk_1">
+    <foreign-key id="343" parent="294" name="localidade_ibfk_1">
       <ColNames>pais</ColNames>
       <RefTableName>pais</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="343" parent="295" name="id">
+    <column id="344" parent="295" name="id">
       <Position>1</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="344" parent="295" name="deisgnacao">
+    <column id="345" parent="295" name="deisgnacao">
       <Position>2</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <key id="345" parent="295" name="PRIMARY">
+    <key id="346" parent="295" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="346" parent="296" name="nr">
+    <column id="347" parent="296" name="nr">
       <Position>1</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="347" parent="296" name="designacao">
+    <column id="348" parent="296" name="designacao">
       <Position>2</Position>
       <DataType>varchar(20)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <key id="348" parent="296" name="PRIMARY">
+    <key id="349" parent="296" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>nr</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="349" parent="297" name="nr">
+    <column id="350" parent="297" name="nr">
       <Position>1</Position>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="350" parent="297" name="descricao">
+    <column id="351" parent="297" name="descricao">
       <Position>2</Position>
       <DataType>varchar(75)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <key id="351" parent="297" name="PRIMARY">
+    <key id="352" parent="297" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>nr</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="353" parent="298" name="codRobot">
+      <Position>1</Position>
+      <DataType>varchar(6)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="354" parent="298" name="localizacao">
+      <Position>2</Position>
+      <DataType>varchar(3)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="355" parent="298" name="disponibilidade">
+      <Position>3</Position>
+      <DataType>tinyint|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <key id="356" parent="298" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>codRobot</ColNames>
       <Primary>1</Primary>
     </key>
   </database-model>
