@@ -54,7 +54,7 @@ public class Sistema {
     }
 
     public void teste(){
-        GPS.criaCaminho(mapa,new GPS(26,5),new GPS(26,0));
+        GPS.criaCaminho(mapa,new GPS(26,5),new GPS(4,0));
     }
 
 }
