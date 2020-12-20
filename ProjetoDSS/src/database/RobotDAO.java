@@ -1,5 +1,6 @@
 package database;
 
+import Modelo.GPS;
 import Modelo.Robot;
 
 import java.sql.*;
@@ -13,7 +14,8 @@ public class RobotDAO implements Map<String, Robot> {
              Statement stm = conn.createStatement()){
                 String sql = "CREATE TABLE IF NOT EXISTS Robot (" +
                                 "codRobot varchar(6) NOT NULL," +
-                                "localizacao varchar(3) NOT NULL," +
+                                "localizacao_x INT NOT NULL," +
+                                "localizacao_y INT NOT NULL," +
                                 "disponibilidade TINYINT NOT NULL," +
                                 "PRIMARY KEY (codRobot))";
                 stm.executeUpdate(sql);
@@ -72,8 +74,8 @@ public class RobotDAO implements Map<String, Robot> {
             Statement stm = conn.createStatement();
             ResultSet rs = stm.executeQuery("SELECT * FROM Robot WHERE codRobot = '"+key.toString()+"' ")) {
                 if(rs.next()){
-                    // Ver construtor por causa da localização GPS e do boolean de disponibilidade
-                   // r = new Robot(rs.getString("codRobot"),);
+                    // Ver construtor por causa das paletes
+                    r = new Robot(rs.getString("codRobot"),new GPS(rs.getInt("localizacao_x"),rs.getInt("localizacao_y")),rs.getInt("disponibilidade")==1,null);
                 }
         } catch (SQLException throwables) {
             throwables.printStackTrace();

@@ -15,27 +15,23 @@ public class PaleteDAO implements Map<String, Palete> {
     private PaleteDAO(){
         try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
                 Statement stm = conn.createStatement()) {
-            String sql = "CREATE TABLE IF NOT EXISTS Palete (" +
-                    "  QRCode varchar(6) NOT NULL," +
-                    "  Prateleira_idPrateleira INT NULL," +
-                    "  Robot_codRobot varchar(6) NULL," +
-                    "  PRIMARY KEY (QRCode)," +
-                    "  INDEX fk_Palete_Prateleira_idx (Prateleira_idPrateleira ASC) VISIBLE," +
-                    "  INDEX fk_Palete_Robot1_idx (Robot_codRobot ASC) VISIBLE," +
-                    "  CONSTRAINT fk_Palete_Prateleira" +
-                    "    FOREIGN KEY (Prateleira_idPrateleira)" +
-                    "    REFERENCES Prateleira (codPrateleira)" +
-                    "    ON DELETE NO ACTION" +
-                    "    ON UPDATE NO ACTION," +
-                    "  CONSTRAINT fk_Palete_Robot1" +
-                    "    FOREIGN KEY (Robot_codRobot)" +
-                    "    REFERENCES Robot (codRobot)" +
-                    "    ON DELETE NO ACTION" +
-                    "    ON UPDATE NO ACTION)";
+            String sql = "CREATE TABLE IF NOT EXISTS `projetoDSS`.`Palete` (\n" +
+                    "        `QRCode` VARCHAR(6) NOT NULL,\n" +
+                    "        `Material` VARCHAR(10) NOT NULL,\n" +
+                    "        `Prateleira_codPrateleira` VARCHAR(6) NULL,\n" +
+                    "        `Robot_codRobot` VARCHAR(6) NULL,\n" +
+                    "        PRIMARY KEY (QRCode),\n" +
+                    "        FOREIGN KEY (Prateleira_codPrateleira) REFERENCES Prateleira(codPrateleira),\n" +
+                    "        FOREIGN KEY (Robot_codRobot) REFERENCES Robot(codRobot))";
             stm.executeUpdate(sql);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+    }
+
+    public PaleteDAO getInstance(){
+        if(PaleteDAO.st == null) PaleteDAO.st = new PaleteDAO();
+        return PaleteDAO.st;
     }
 
     @Override
@@ -43,7 +39,7 @@ public class PaleteDAO implements Map<String, Palete> {
         int i = 0;
         try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
             Statement stm = conn.createStatement();
-            ResultSet rs = stm.executeQuery("SELECT count(*) FROM Palete");) {
+            ResultSet rs = stm.executeQuery("SELECT count(*) FROM Palete")) {
                 if(rs.next()){
                     i = rs.getInt(1);
                 }
@@ -63,7 +59,7 @@ public class PaleteDAO implements Map<String, Palete> {
         boolean r = false;
         try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
             Statement stm = conn.createStatement();
-            ResultSet rs = stm.executeQuery("SELECT codPalete FROM Palete WHERE codPalete = '"+key.toString()+"' ");) {
+            ResultSet rs = stm.executeQuery("SELECT codPalete FROM Palete WHERE codPalete = '"+key.toString()+"' ")) {
                 r = rs.next();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -102,7 +98,7 @@ public class PaleteDAO implements Map<String, Palete> {
     public Palete remove(Object key) {
         Palete p = this.get(key);
         try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
-            Statement stm = conn.createStatement();) {
+            Statement stm = conn.createStatement()) {
                 stm.executeUpdate("DELETE FROM Palete WHERE codPalete = '"+key.toString()+"' ");
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -119,7 +115,7 @@ public class PaleteDAO implements Map<String, Palete> {
     @Override
     public void clear() {
         try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
-            Statement stm = conn.createStatement();) {
+            Statement stm = conn.createStatement()) {
                 stm.execute("TRUNCATE Palete");
 
         } catch (SQLException throwables) {
@@ -132,7 +128,7 @@ public class PaleteDAO implements Map<String, Palete> {
         Set<String> res = new HashSet<>();
         try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
             Statement stm = conn.createStatement();
-            ResultSet rs = stm.executeQuery("SELECT codPalete FROM Palete");) {
+            ResultSet rs = stm.executeQuery("SELECT codPalete FROM Palete")) {
                 while(rs.next()){
                     String idt = rs.getString("codPalete");
                     res.add(idt);
@@ -148,7 +144,7 @@ public class PaleteDAO implements Map<String, Palete> {
         Collection<Palete> res = new HashSet<>();
         try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
             Statement stm = conn.createStatement();
-            ResultSet rs = stm.executeQuery("SELECT codPalete FROM Palete");) {
+            ResultSet rs = stm.executeQuery("SELECT codPalete FROM Palete")) {
                 while(rs.next()){
                     String idt = rs.getString("codPalete");
                     Palete p = this.get(idt);

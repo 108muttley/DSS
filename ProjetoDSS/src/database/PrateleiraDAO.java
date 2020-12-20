@@ -1,5 +1,6 @@
 package database;
 
+import Modelo.GPS;
 import Modelo.Palete;
 import Modelo.Prateleira;
 
@@ -14,7 +15,8 @@ public class PrateleiraDAO implements Map<String, Prateleira> {
             Statement stm = conn.createStatement()) {
                 String sql = "CREATE TABLE IF NOT EXISTS Prateleira (" +
                             "codPrateleira varchar(5) NOT NULL," +
-                            "localizacao varchar(3) NOT NULL,"+
+                            "localizacao_x INT NOT NULL," +
+                            "localizacao_y INT NOT NULL," +
                             "disponibilidade tinyint NOT NULL,"+
                             "PRIMARY KEY (codPrateleira))";
                 stm.executeUpdate(sql);
@@ -75,8 +77,8 @@ public class PrateleiraDAO implements Map<String, Prateleira> {
             ResultSet rs = stm.executeQuery("SELECT * FROM Prateleira WHERE codPrateleira='"+key.toString()+"'");) {
                 if(rs.next()){
                     //Verificar como fazer por causa do construtor da prateleira levar um boolean disponibilidade e um GPS localização
-
-                    //p = new Prateleira(rs.getString("codPrateleira"),rs.getInt("disponibilidade")==1,new Palete(),rs.getString("localizacao"));
+                    p = new Prateleira(rs.getString("codPrateleira"),rs.getInt("disponibilidade")==1,
+                            null,new GPS(rs.getInt("localizacao_x"),rs.getInt("localizacao_y")));
                 }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
