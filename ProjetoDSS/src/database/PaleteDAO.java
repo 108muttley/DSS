@@ -29,7 +29,7 @@ public class PaleteDAO implements Map<String, Palete> {
         }
     }
 
-    public PaleteDAO getInstance(){
+    public static PaleteDAO getInstance(){
         if(PaleteDAO.st == null) PaleteDAO.st = new PaleteDAO();
         return PaleteDAO.st;
     }

@@ -25,7 +25,7 @@ public class PrateleiraDAO implements Map<String, Prateleira> {
         }
     }
 
-    public PrateleiraDAO getInstance(){
+    public static PrateleiraDAO getInstance(){
         if(PrateleiraDAO.st==null) PrateleiraDAO.st = new PrateleiraDAO();
         return PrateleiraDAO.st;
     }
