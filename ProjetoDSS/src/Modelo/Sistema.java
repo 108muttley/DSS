@@ -47,6 +47,17 @@ public class Sistema {
                 Palete p = (Palete) args.get(0);
                 this.paletesWaitingForDelivering.add(p);
                 removePaleteAguardarLeitura();
+                break;
+            case "RobotRecolha":
+                String s = (String) args.get(1);
+                for(Palete p1 : this.paletesWaitingForDelivering){
+                    if(p1.getCodPalete().equals(s)) {
+                        this.paletesWaitingForDelivering.remove(p1);
+                        p1.setLoc((String) args.get(0));
+                        break;
+                    }
+                }
+                break;
         }
     }
     public void run(){

@@ -13,6 +13,15 @@ public class Percurso {
         this.entrega = entrega;
     }
 
+    public Percurso(Percurso p){
+        this.recolha = new ArrayList<>();
+        this.entrega = new ArrayList<>();
+        for(GPS g : p.getRecolha())
+            this.recolha.add(g.clone());
+        for(GPS g : p.getEntrega())
+            this.entrega.add(g.clone());
+    }
+
     public List<GPS> getRecolha() {
         List<GPS> novo = new ArrayList<>();
         for (GPS gps : recolha ){
@@ -42,6 +51,14 @@ public class Percurso {
             novo.add(gps.clone());
         }
         this.recolha = recolha;
+    }
+
+    public Percurso clone(){
+        return new Percurso(this);
+    }
+
+    public GPS getPontoDeEntrega(){
+        return this.entrega.get(this.entrega.size()-1);
     }
 
 }
