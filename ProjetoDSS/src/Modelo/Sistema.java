@@ -1,6 +1,8 @@
 package Modelo;
 
 import database.PaleteDAO;
+import database.PrateleiraDAO;
+import database.RobotDAO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +12,8 @@ import java.util.Random;
 public class Sistema {
     //    private List<Palete> paletesWaitingForReading;
     private Map<String, Palete> paletes;
+    private Map<String,Prateleira> prateleiras;
+    private Map<String,Robot> robots;
 
 
     private List<String> paletesWaitingForDelivering;
@@ -19,8 +23,18 @@ public class Sistema {
 
 
     public Sistema() {
+        this.prateleiras = PrateleiraDAO.getInstance();
         this.paletes = PaleteDAO.getInstance();
+        this.robots = RobotDAO.getInstance();
+
+
         this.paletesWaitingForDelivering = new ArrayList<>();
+        if(this.paletes.size() > 0)
+            for(Map.Entry<String,Palete> entry : this.paletes.entrySet()){
+                if(entry.getValue().getLoc().equals("reception")){ // se estiver na receçao, adiciona
+                    this.paletesWaitingForDelivering.add(entry.getKey());
+                }
+            }
         this.leitor = new LeitorQrCode(this);
         this.mapa = GPS.criaMapa();
         //this.mapa = GPS.criaMapa();
@@ -29,13 +43,69 @@ public class Sistema {
     public Boolean comunicaCodigoQR(String produto) {
         String cod = geraCodigoQR();
         this.paletes.put(cod, new Palete(cod, "reception", produto));
-
-        this.paletesWaitingForDelivering.add(produto);
+        this.paletesWaitingForDelivering.add(cod);
         return true;
     }
 
     public Boolean comunicaOrdemDeTransporte() {
+        if (this.paletesWaitingForDelivering.size() > 0) {
+            String produtoATransportar = this.paletesWaitingForDelivering.get(0);
+            String prateleira = getPrateleiraLivre();
+            return comunicaRobotMaisProximo(produtoATransportar, prateleira);
+        }
         return false;
+    }
+
+
+    // ver qual o robot mais proximo
+    // enviar-lhe o percurso de ir buscar a palete + o de entregar
+    // robot comunicar que iniciou a entrega
+    public Boolean comunicaRobotMaisProximo(String codigoPalete, String prateleiraDestino){ // robot -> localizacao da palete -> destino
+        if(!this.prateleiras.get(prateleiraDestino).isAvailable()) return false;
+        List<GPS> pathFinal = new ArrayList<>();
+        List<GPS> testar = new ArrayList<>();
+        GPS destino = this.prateleiras.get(prateleiraDestino).getLocalizacao();
+        this.prateleiras.get(prateleiraDestino).setDisponibilidade(false);
+        double maximo = 99;
+        double atual;
+        GPS meio = new GPS(0,0);
+        GPS fim = destino.clone();
+        String robotEscolhido = "";
+        for(Map.Entry<String,Robot> entry : this.robots.entrySet()){
+            if(entry.getValue().isAvailable()) {
+                GPS inicio = entry.getValue().getLocalizacao();
+                if ((atual = GPS.criaCaminho(this.mapa, inicio, meio, testar)) < maximo) { // encontrou novo robot mais proximo
+                    robotEscolhido = entry.getKey();
+                    maximo = atual;
+                    pathFinal = new ArrayList<>(testar);
+                    testar = new ArrayList<>();
+                }
+            }
+        }
+        if(robotEscolhido.isEmpty()) return false;
+        List<GPS> entrega = new ArrayList<>(); // parte da localização da palete -> prateleira
+        GPS.criaCaminho(this.mapa,meio,destino,entrega);
+        Percurso percurso = new Percurso(pathFinal,entrega);
+
+        Palete palete = this.paletes.get(codigoPalete);
+        this.paletes.remove(codigoPalete);
+        palete.setLoc(robotEscolhido); // Enquanto robot anda até à palete, a palete já está na sua "posse" <- dar fix nisto
+        this.paletes.put(codigoPalete,palete);
+        if(this.robots.get(robotEscolhido).doDelivering( palete , percurso)){
+            palete = this.paletes.get(codigoPalete);
+            palete.setLoc(prateleiraDestino); // alterar localização para prateleira
+            this.paletes.put(codigoPalete,palete);
+            this.prateleiras.get(prateleiraDestino).setP(palete); // alterar palete que a prateleira tem
+        }
+
+        return true;
+    }
+
+    public String getPrateleiraLivre(){ // busca uma prateleira livre
+        for(Map.Entry<String,Prateleira> entry : this.prateleiras.entrySet()){
+            if(entry.getValue().isAvailable()) return entry.getValue().getCodPrateleira();
+        }
+        return null;
     }
 
 
@@ -44,7 +114,16 @@ public class Sistema {
     }
 
     public void teste() {
-        GPS.criaCaminho(mapa, new GPS(26, 5), new GPS(4, 0));
+        List<GPS> caminho = new ArrayList<>();
+        System.out.println(GPS.criaCaminho(mapa, new GPS(26, 5), new GPS(4, 0),caminho) + " e " + caminho);
+        List<GPS> caminho2 = new ArrayList<>();
+        System.out.println(GPS.criaCaminho(mapa, new GPS(26, 5), new GPS(4, 0),caminho2) + " e " + caminho2);
+        List<GPS> caminho3 = new ArrayList<>();
+        caminho3.addAll(caminho);
+        System.out.println("#######");
+        System.out.println(caminho3);
+        caminho3.addAll(caminho2);
+        System.out.println(caminho3);
     }
 
     public String geraCodigoQR() {

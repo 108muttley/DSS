@@ -30,7 +30,7 @@ public class Robot {
     public Robot(Robot r){
         this.codRobot = r.getCod();
         setLocalizacao(r.getLocalizacao());
-        setLivre(r.getLivre());
+        setLivre(r.isAvailable());
         setPalete(r.getPalete());
     }
 
@@ -42,7 +42,7 @@ public class Robot {
         this.localizacao = localizacao;
     }
 
-    public boolean getLivre() {
+    public boolean isAvailable() {
         return livre;
     }
 
@@ -68,6 +68,25 @@ public class Robot {
         args.add(this.palete.getCodPalete()); // Codigo de palete
         args.add(this.percurso.getPontoDeEntrega()); // GPS
         //sistema.comunicaSistema("RobotRecolha",args);
+    }
+
+    public Boolean doDelivering(Palete palete, Percurso percurso){
+        this.livre = false;
+        List<GPS> aux = percurso.getEntrega();
+        for(GPS g : aux){
+            // caminho
+        }
+        this.localizacao = aux.get(aux.size()-1);
+        this.palete = palete;
+        System.out.println("Robot: Palete Recolhida com sucesso");
+        aux = new ArrayList<>(percurso.getRecolha());
+        for(GPS g : aux){
+            // caminho
+        }
+        this.localizacao = aux.get(aux.size()-1);
+        this.palete = null;
+        this.livre = true;
+        return true;
     }
 
 }

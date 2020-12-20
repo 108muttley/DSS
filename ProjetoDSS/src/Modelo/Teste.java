@@ -9,6 +9,6 @@ public class Teste {
         List<String> l = new ArrayList<>();
         l.add("cimento");
         s.geraCodigoQR();
-        //s.run();
+        s.teste();
     }
 }

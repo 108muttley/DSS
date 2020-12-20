@@ -6,10 +6,18 @@ public class Prateleira {
     private Palete palete;
     private GPS localizacao;
 
+
     public Prateleira(String codPrateleira, boolean disponibilidade, Palete p, GPS localizacao) {
         this.codPrateleira = codPrateleira;
         this.disponibilidade = disponibilidade;
         this.palete = p;
+        this.localizacao = localizacao;
+    }
+
+    public Prateleira(String codPrateleira,  GPS localizacao) {
+        this.codPrateleira = codPrateleira;
+        this.disponibilidade = true;
+        this.palete = null;
         this.localizacao = localizacao;
     }
 
@@ -21,7 +29,7 @@ public class Prateleira {
         this.codPrateleira = codPrateleira;
     }
 
-    public boolean isDisponibilidade() {
+    public boolean isAvailable() {
         return disponibilidade;
     }
 
