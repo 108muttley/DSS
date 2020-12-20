@@ -67,7 +67,7 @@ public class Robot {
         args.add(this.codRobot); // Codigo de robot que está a comunicar
         args.add(this.palete.getCodPalete()); // Codigo de palete
         args.add(this.percurso.getPontoDeEntrega()); // GPS
-        sistema.comunicaSistema("RobotRecolha",args);
+        //sistema.comunicaSistema("RobotRecolha",args);
     }
 
 }
