@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.Random;
 
 public class Sistema {
-    //    private List<Palete> paletesWaitingForReading;
     private Map<String, Palete> paletes;
     private Map<String,Prateleira> prateleiras;
     private Map<String,Robot> robots;
@@ -26,12 +25,15 @@ public class Sistema {
         this.prateleiras = PrateleiraDAO.getInstance();
         this.paletes = PaleteDAO.getInstance();
         this.robots = RobotDAO.getInstance();
+       // if(this.prateleiras.isEmpty())
+        PrateleiraDAO.povoa();
+
 
 
         this.paletesWaitingForDelivering = new ArrayList<>();
         if(this.paletes.size() > 0)
             for(Map.Entry<String,Palete> entry : this.paletes.entrySet()){
-                if(entry.getValue().getLoc().equals("reception")){ // se estiver na receçao, adiciona
+                if(entry.getValue().getLoc().equals("0-0")){ // se estiver na receçao, adiciona 0-0 - receção
                     this.paletesWaitingForDelivering.add(entry.getKey());
                 }
             }
@@ -42,7 +44,7 @@ public class Sistema {
 
     public Boolean comunicaCodigoQR(String produto) {
         String cod = geraCodigoQR();
-        this.paletes.put(cod, new Palete(cod, "reception", produto));
+        this.paletes.put(cod, new Palete(cod, "0-0", produto));
         this.paletesWaitingForDelivering.add(cod);
         return true;
     }

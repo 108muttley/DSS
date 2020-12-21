@@ -167,4 +167,30 @@ public class PrateleiraDAO implements Map<String, Prateleira> {
     public Set<Entry<String, Prateleira>> entrySet() {
         return null;
     }
+
+    public static void povoa(){
+        if(st != null) return;
+        try(Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
+            Statement stm = conn.createStatement()) {
+            String sql = "INSERT INTO Prateleira (codPrateleira, " +
+                    "localizacao_x, " +
+                    "localizacao_y," +
+                    "disponibilidade)" +
+                    "VALUES ('0-0',0,0,1)," +
+                    "('P01',5,0,1)," +
+                    "('P02',10,0,1)," +
+                    "('P03',15,0,1)," +
+                    "('P04',20,0,1)," +
+                    "('P05',25,0,1)," +
+                    "('P06',5,5,1)," +
+                    "('P07',10,5,1)," +
+                    "('P08',15,5,1)," +
+                    "('P09',20,5,1)," +
+                    "('P10',25,5,1)," +
+                    "('e-e',28,5,1)";
+            stm.executeUpdate(sql);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
 }
