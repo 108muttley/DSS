@@ -59,7 +59,7 @@ public class PaleteDAO implements Map<String, Palete> {
         boolean r = false;
         try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
              Statement stm = conn.createStatement();
-             ResultSet rs = stm.executeQuery("SELECT codPalete FROM Palete WHERE codPalete = '" + key.toString() + "' ")) {
+             ResultSet rs = stm.executeQuery("SELECT QRCode FROM Palete WHERE QRCode = '" + key.toString() + "' ")) {
             r = rs.next();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -78,9 +78,12 @@ public class PaleteDAO implements Map<String, Palete> {
         Palete p = null;
         try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
              Statement stm = conn.createStatement();
-             ResultSet rs = stm.executeQuery("SELECT * FROM Palete WHERE codPalete = '" + key.toString() + "' ")) {
+             ResultSet rs = stm.executeQuery("SELECT * FROM Palete WHERE QRCode = '" + key.toString() + "' ")) {
             if (rs.next()) {
-                //NÃO TERMINADA POR CAUSA DOS CONSTRUTORES
+                if(rs.getString("Prateleira_codPrateleira").isEmpty())
+                    p = new Palete(rs.getString("QRCode"),rs.getString("Robot_codRobot"),rs.getString("Material"));
+                else
+                    p = new Palete(rs.getString("QRCode"),rs.getString("Prateleira_codPrateleira"),rs.getString("Material"));
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -118,7 +121,7 @@ public class PaleteDAO implements Map<String, Palete> {
         Palete p = this.get(key);
         try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
              Statement stm = conn.createStatement()) {
-            stm.executeUpdate("DELETE FROM Palete WHERE codPalete = '" + key.toString() + "' ");
+            stm.executeUpdate("DELETE FROM Palete WHERE QRCode = '" + key.toString() + "' ");
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -147,9 +150,9 @@ public class PaleteDAO implements Map<String, Palete> {
         Set<String> res = new HashSet<>();
         try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
              Statement stm = conn.createStatement();
-             ResultSet rs = stm.executeQuery("SELECT codPalete FROM Palete")) {
+             ResultSet rs = stm.executeQuery("SELECT QRCode FROM Palete")) {
             while (rs.next()) {
-                String idt = rs.getString("codPalete");
+                String idt = rs.getString("QRCode");
                 res.add(idt);
             }
         } catch (SQLException throwables) {
@@ -163,9 +166,9 @@ public class PaleteDAO implements Map<String, Palete> {
         Collection<Palete> res = new HashSet<>();
         try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
              Statement stm = conn.createStatement();
-             ResultSet rs = stm.executeQuery("SELECT codPalete FROM Palete")) {
+             ResultSet rs = stm.executeQuery("SELECT QRCode FROM Palete")) {
             while (rs.next()) {
-                String idt = rs.getString("codPalete");
+                String idt = rs.getString("QRCode");
                 Palete p = this.get(idt);
                 res.add(p);
             }

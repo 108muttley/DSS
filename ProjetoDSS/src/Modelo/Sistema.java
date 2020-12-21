@@ -29,12 +29,11 @@ public class Sistema {
         PrateleiraDAO.povoa();
 
 
-
         this.paletesWaitingForDelivering = new ArrayList<>();
         if(this.paletes.size() > 0)
-            for(Map.Entry<String,Palete> entry : this.paletes.entrySet()){
-                if(entry.getValue().getLoc().equals("0-0")){ // se estiver na receçao, adiciona 0-0 - receção
-                    this.paletesWaitingForDelivering.add(entry.getKey());
+            for(String s : this.paletes.keySet()){
+                if(this.paletes.get(s).getLoc().equals("0-0")){ // se estiver na receçao, adiciona 0-0 - receção
+                    this.paletesWaitingForDelivering.add(s);
                 }
             }
         this.leitor = new LeitorQrCode(this);
@@ -104,8 +103,8 @@ public class Sistema {
     }
 
     public String getPrateleiraLivre(){ // busca uma prateleira livre
-        for(Map.Entry<String,Prateleira> entry : this.prateleiras.entrySet()){
-            if(entry.getValue().isAvailable()) return entry.getValue().getCodPrateleira();
+        for(String s : this.prateleiras.keySet()){
+            if(this.prateleiras.get(s).isAvailable()) return s;
         }
         return null;
     }
