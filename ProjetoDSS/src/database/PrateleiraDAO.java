@@ -3,6 +3,7 @@ package database;
 import Modelo.GPS;
 import Modelo.Palete;
 import Modelo.Prateleira;
+import Modelo.Robot;
 
 import java.sql.*;
 import java.util.*;
@@ -87,9 +88,19 @@ public class PrateleiraDAO implements Map<String, Prateleira> {
     }
 
     @Override
-    // Não está feita por causa dos construtores ainda, temos que avaliar melhor toda a stiuação das localizações e assim
-    public Prateleira put(String key, Prateleira value) {
-        return null;
+    public Prateleira put(String key, Prateleira p1) {
+        Prateleira p2 = null;
+        try(Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
+            Statement stm = conn.createStatement()) {
+            stm.executeUpdate("INSERT INTO Robot " +
+                    "VALUES ('"+p1.getCodPrateleira()+"', " +
+                    "'"+p1.getLocalizacao().getX()+"', " +
+                    "'"+p1.getLocalizacao().getY()+"', " +
+                    "'"+p1.isAvailable()+"' " );
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return p2;
     }
 
     @Override

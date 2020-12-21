@@ -84,8 +84,19 @@ public class RobotDAO implements Map<String, Robot> {
     }
 
     @Override
-    public Robot put(String key, Robot value) {
-        return null;
+    public Robot put(String key, Robot r1) {
+        Robot r2 = null;
+        try(Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
+            Statement stm = conn.createStatement()) {
+            stm.executeUpdate("INSERT INTO Robot " +
+                    "VALUES ('"+r1.getCod()+"', " +
+                    "'"+r1.getLocalizacao().getX()+"', " +
+                    "'"+r1.getLocalizacao().getY()+"', " +
+                    "'"+r1.isAvailable()+"' " );
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return r2;
     }
 
     @Override
