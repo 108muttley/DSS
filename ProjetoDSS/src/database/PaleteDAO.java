@@ -80,10 +80,10 @@ public class PaleteDAO implements Map<String, Palete> {
              Statement stm = conn.createStatement();
              ResultSet rs = stm.executeQuery("SELECT * FROM Palete WHERE QRCode = '" + key.toString() + "' ")) {
             if (rs.next()) {
-                if(rs.getString("Prateleira_codPrateleira").isEmpty())
-                    p = new Palete(rs.getString("QRCode"),rs.getString("Robot_codRobot"),rs.getString("Material"));
+                if (rs.getString("Prateleira_codPrateleira") == null)
+                    p = new Palete(rs.getString("QRCode"), rs.getString("Robot_codRobot"), rs.getString("Material"));
                 else
-                    p = new Palete(rs.getString("QRCode"),rs.getString("Prateleira_codPrateleira"),rs.getString("Material"));
+                    p = new Palete(rs.getString("QRCode"), rs.getString("Prateleira_codPrateleira"), rs.getString("Material"));
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -95,24 +95,20 @@ public class PaleteDAO implements Map<String, Palete> {
     @Override
     public Palete put(String key, Palete value) {
         Palete res = null;
-        if (value.getLoc().startsWith("R")) {
-            try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
-                 Statement stm = conn.createStatement()) {
-                stm.executeUpdate("INSERT INTO Palete VALUES ('" + value.getCodPalete() + "', '" + value.getM() + "', NULL , '" + value.getLoc()+"')"+
-                        "ON DUPLICATE KEY UPDATE QRCode=VALUES(QRCode), Material=VALUES(Material)");
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
+
+        try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
+             Statement stm = conn.createStatement()) {
+            if (value.getLoc().startsWith("R")) {
+                stm.executeUpdate("INSERT INTO Palete VALUES ('" + value.getCodPalete() + "', '" + value.getM() + "', NULL , '" + value.getLoc() + "')" +
+                        "ON DUPLICATE KEY UPDATE Prateleira_codPrateleira=VALUES(Prateleira_codPrateleira), Robot_codRobot=VALUES(Robot_codRobot)");
+            } else {
+                stm.executeUpdate("INSERT INTO Palete VALUES ('" + value.getCodPalete() + "', '" + value.getM() + "', '" + value.getLoc() + "' , NULL)" +
+                        "ON DUPLICATE KEY UPDATE Prateleira_codPrateleira=VALUES(Prateleira_codPrateleira), Robot_codRobot=VALUES(Robot_codRobot)");
             }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
-        else{
-            try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
-                 Statement stm = conn.createStatement()) {
-                stm.executeUpdate("INSERT INTO Palete VALUES ('" + value.getCodPalete() + "', '" + value.getM() + "', '" + value.getLoc()+"' , NULL)"+
-                        "ON DUPLICATE KEY UPDATE QRCode=VALUES(QRCode), Material=VALUES(Material)");
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-        }
+
         return res;
     }
 

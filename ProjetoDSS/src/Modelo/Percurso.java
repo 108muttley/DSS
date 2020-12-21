@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Percurso {
+    private String codPalete;
     private List<GPS> recolha;
     private List<GPS> entrega;
 

@@ -10,7 +10,6 @@ public class Robot {
     private Palete palete;
     private GPS localizacao;
     private Percurso percurso;
-    private Sistema sistema;
 
     public Robot(String codRobot,GPS localizacao, boolean livre, Palete pal) {
         this.codRobot = codRobot;
@@ -78,13 +77,14 @@ public class Robot {
         }
         this.localizacao = aux.get(aux.size()-1);
         this.palete = palete;
-        System.out.println("Robot: Palete Recolhida com sucesso");
+        System.out.println("Robot: Palete Recolhida com Sucesso");
         aux = new ArrayList<>(percurso.getRecolha());
         for(GPS g : aux){
             // caminho
         }
         this.localizacao = aux.get(aux.size()-1);
         this.palete = null;
+        System.out.println("Robot: Transporte Feito com Sucesso");
         this.livre = true;
         return true;
     }

@@ -27,6 +27,7 @@ public class Sistema {
         this.robots = RobotDAO.getInstance();
        // if(this.prateleiras.isEmpty())
         PrateleiraDAO.povoa();
+        RobotDAO.povoa();
 
 
         this.paletesWaitingForDelivering = new ArrayList<>();
@@ -36,6 +37,7 @@ public class Sistema {
                     this.paletesWaitingForDelivering.add(s);
                 }
             }
+        else System.out.println("Não há paletes");
         this.leitor = new LeitorQrCode(this);
         this.mapa = GPS.criaMapa();
         //this.mapa = GPS.criaMapa();
@@ -70,33 +72,37 @@ public class Sistema {
         double maximo = 99;
         double atual;
         GPS meio = new GPS(0,0);
-        GPS fim = destino.clone();
         String robotEscolhido = "";
-        for(Map.Entry<String,Robot> entry : this.robots.entrySet()){
-            if(entry.getValue().isAvailable()) {
-                GPS inicio = entry.getValue().getLocalizacao();
+        for(String s : this.robots.keySet()){
+            if(this.robots.get(s).isAvailable()) {
+                GPS inicio = this.robots.get(s).getLocalizacao();
                 if ((atual = GPS.criaCaminho(this.mapa, inicio, meio, testar)) < maximo) { // encontrou novo robot mais proximo
-                    robotEscolhido = entry.getKey();
+                    robotEscolhido = s;
                     maximo = atual;
                     pathFinal = new ArrayList<>(testar);
                     testar = new ArrayList<>();
                 }
             }
         }
+        System.out.println(robotEscolhido);
         if(robotEscolhido.isEmpty()) return false;
         List<GPS> entrega = new ArrayList<>(); // parte da localização da palete -> prateleira
         GPS.criaCaminho(this.mapa,meio,destino,entrega);
         Percurso percurso = new Percurso(pathFinal,entrega);
 
         Palete palete = this.paletes.get(codigoPalete);
-        this.paletes.remove(codigoPalete);
+        //this.paletes.remove(codigoPalete);
         palete.setLoc(robotEscolhido); // Enquanto robot anda até à palete, a palete já está na sua "posse" <- dar fix nisto
         this.paletes.put(codigoPalete,palete);
         if(this.robots.get(robotEscolhido).doDelivering( palete , percurso)){
             palete = this.paletes.get(codigoPalete);
             palete.setLoc(prateleiraDestino); // alterar localização para prateleira
+            //this.paletes.remove(codigoPalete);
             this.paletes.put(codigoPalete,palete);
-            this.prateleiras.get(prateleiraDestino).setP(palete); // alterar palete que a prateleira tem
+            Prateleira prateleira = this.prateleiras.get(prateleiraDestino);
+            //this.prateleiras.remove(prateleiraDestino);
+            prateleira.setDisponibilidade(false);
+            this.prateleiras.put(prateleiraDestino,prateleira); // alterar palete que a prateleira tem
         }
 
         return true;

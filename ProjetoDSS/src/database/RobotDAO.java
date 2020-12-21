@@ -92,7 +92,9 @@ public class RobotDAO implements Map<String, Robot> {
                     "VALUES ('"+r1.getCod()+"', " +
                     "'"+r1.getLocalizacao().getX()+"', " +
                     "'"+r1.getLocalizacao().getY()+"', " +
-                    "'"+r1.isAvailable()+"' " );
+                    "'"+r1.isAvailable()+"')"+
+                    "ON DUPLICATE KEY UPDATE localizacao_x=VALUES(localizacao_x), localizacao_y=VALUES(localizacao_y), disponibilidade=VALUES(disponibilidade)");
+
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -163,5 +165,23 @@ public class RobotDAO implements Map<String, Robot> {
     public Set<Entry<String, Robot>> entrySet() {
         return null;
     }
+
+    public static void povoa(){
+        try(Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
+            Statement stm = conn.createStatement()) {
+            String sql = "INSERT INTO Robot (codRobot, " +
+                    "localizacao_x, " +
+                    "localizacao_y," +
+                    "disponibilidade)" +
+                    "VALUES ('R01',5,5,1)" +
+                    "ON DUPLICATE KEY UPDATE codRobot=VALUES(codRobot), " +
+                    "localizacao_x=VALUES(localizacao_x), " +
+                    "localizacao_y=VALUES(localizacao_y)";
+            stm.executeUpdate(sql);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
 
 }

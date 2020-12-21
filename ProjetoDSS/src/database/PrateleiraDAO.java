@@ -92,11 +92,16 @@ public class PrateleiraDAO implements Map<String, Prateleira> {
         Prateleira p2 = null;
         try(Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
             Statement stm = conn.createStatement()) {
-            stm.executeUpdate("INSERT INTO Robot " +
-                    "VALUES ('"+p1.getCodPrateleira()+"', " +
-                    "'"+p1.getLocalizacao().getX()+"', " +
-                    "'"+p1.getLocalizacao().getY()+"', " +
-                    "'"+p1.isAvailable()+"' " );
+            int d;
+            if(p1.isAvailable()) d = 1;
+            else d = 0;
+            stm.executeUpdate("INSERT INTO Prateleira " +
+                    "VALUES ('"+p1.getCodPrateleira()+"', '" +
+                    p1.getLocalizacao().getX()+"', '" +
+                    p1.getLocalizacao().getY()+"', '" +
+                    d+"')" +
+                    "ON DUPLICATE KEY UPDATE disponibilidade=VALUES(disponibilidade)");
+
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -169,7 +174,6 @@ public class PrateleiraDAO implements Map<String, Prateleira> {
     }
 
     public static void povoa(){
-        if(st != null) return;
         try(Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
             Statement stm = conn.createStatement()) {
             String sql = "INSERT INTO Prateleira (codPrateleira, " +
@@ -187,7 +191,10 @@ public class PrateleiraDAO implements Map<String, Prateleira> {
                     "('P08',15,5,1)," +
                     "('P09',20,5,1)," +
                     "('P10',25,5,1)," +
-                    "('e-e',28,5,1)";
+                    "('e-e',28,3,1)" +
+                    "ON DUPLICATE KEY UPDATE codPrateleira=VALUES(codPrateleira), " +
+                    "localizacao_x=VALUES(localizacao_x), " +
+                    "localizacao_y=VALUES(localizacao_y)";
             stm.executeUpdate(sql);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
