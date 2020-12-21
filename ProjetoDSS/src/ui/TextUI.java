@@ -31,7 +31,6 @@ public class TextUI {
     public void run() {
         do {
             menu.executa();
-            System.out.println("0 - Exit");
             switch (menu.getOpcao()) {
                 case 1:
                     comunicarCodigoQR();
@@ -50,7 +49,7 @@ public class TextUI {
                     break;
             }
         } while (menu.getOpcao() != 0); // A opção 0 é usada para sair do menu.
-        System.out.println("Até breve!...");
+        System.out.println("Saindo ...");
     }
 
     // to do
