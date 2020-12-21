@@ -71,5 +71,9 @@ public class TextUI {
 
     public void notificarEntregaDePaletes(){}
 
-    public void consultarListagem(){}
+    public void consultarListagem(){
+        if (!modelo.consultaListagem()) {
+            System.out.println("Something went wrong");
+        }
+    }
 }

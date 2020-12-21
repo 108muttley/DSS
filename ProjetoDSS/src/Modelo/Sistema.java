@@ -109,6 +109,22 @@ public class Sistema {
         return null;
     }
 
+    public Boolean consultaListagem(){
+        for(String s : this.paletes.keySet()){
+            Palete p = this.paletes.get(s);
+            GPS coordenadas;
+            if(p.getLoc().startsWith("R"))
+                coordenadas = this.robots.get(p.getLoc()).getLocalizacao().clone();
+            else
+                coordenadas = this.prateleiras.get(p.getLoc()).getLocalizacao().clone();
+            System.out.println("Palete { código: " + s +
+                    ", material: " + p.getM() +
+                    ", localização: " + p.getLoc() +
+                    ", GPS: " + coordenadas.toString());
+        }
+        return true;
+    }
+
 
     public void run() {
         this.leitor.run();
