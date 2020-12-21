@@ -9,7 +9,7 @@ public class Robot {
     private boolean livre;
     private Palete palete;
     private GPS localizacao;
-    private Percurso percurso;
+    //private Percurso percurso;
 
     public Robot(String codRobot,GPS localizacao, boolean livre, Palete pal) {
         this.codRobot = codRobot;
@@ -65,27 +65,38 @@ public class Robot {
         List<Object> args = new ArrayList<>();
         args.add(this.codRobot); // Codigo de robot que está a comunicar
         args.add(this.palete.getCodPalete()); // Codigo de palete
-        args.add(this.percurso.getPontoDeEntrega()); // GPS
+        //args.add(this.percurso.getPontoDeEntrega()); // GPS
         //sistema.comunicaSistema("RobotRecolha",args);
     }
 
+
+    // falta saber se é preciso atualizar a localização na database
     public boolean doDelivering(Palete palete, Percurso percurso){
-        this.livre = false;
-        List<GPS> aux = percurso.getEntrega();
+        List<GPS> aux = percurso.getRecolha();
         for(GPS g : aux){
-            // caminho
+            this.localizacao = g.clone();
         }
-        this.localizacao = aux.get(aux.size()-1);
-        this.palete = palete;
-        System.out.println("Robot: Palete Recolhida com Sucesso");
-        aux = new ArrayList<>(percurso.getRecolha());
-        for(GPS g : aux){
-            // caminho
-        }
-        this.localizacao = aux.get(aux.size()-1);
-        this.palete = null;
+        //this.localizacao = aux.get(aux.size()-1);
+        //System.out.println("Robot: Palete Recolhida com Sucesso");
+
+        //this.localizacao = percurso.getPontoDeEntrega();
         System.out.println("Robot: Transporte Feito com Sucesso");
+        this.palete = null;
         this.livre = true;
+        return true;
+    }
+
+    public boolean doRecolha(Percurso percurso){
+        List<GPS> aux = percurso.getRecolha();
+        for(GPS g : aux){
+            this.localizacao = g.clone();
+        }
+        //this.localizacao = aux.get(aux.size()-1);
+        //System.out.println("Robot: Palete Recolhida com Sucesso");
+
+        //this.localizacao = percurso.getPontoDeEntrega();
+        System.out.println("Robot: Palete Recolhida com Sucesso");
+        //this.palete = palete;
         return true;
     }
 

@@ -88,11 +88,14 @@ public class RobotDAO implements Map<String, Robot> {
         Robot r2 = null;
         try(Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
             Statement stm = conn.createStatement()) {
+            int d;
+            if(r1.isAvailable()) d = 1;
+            else d = 0;
             stm.executeUpdate("INSERT INTO Robot " +
                     "VALUES ('"+r1.getCod()+"', " +
                     "'"+r1.getLocalizacao().getX()+"', " +
                     "'"+r1.getLocalizacao().getY()+"', " +
-                    "'"+r1.isAvailable()+"')"+
+                    "'"+d+"')"+
                     "ON DUPLICATE KEY UPDATE localizacao_x=VALUES(localizacao_x), localizacao_y=VALUES(localizacao_y), disponibilidade=VALUES(disponibilidade)");
 
         } catch (SQLException throwables) {

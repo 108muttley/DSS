@@ -64,7 +64,11 @@ public class TextUI {
         }
     }
 
-    public void notificarRecolhaDePaletes(){}
+    public void notificarRecolhaDePaletes(){
+        if (!modelo.notificarRecolhaDePaletes()) {
+            System.out.println("Something went wrong");
+        }
+    }
 
     public void notificarEntregaDePaletes(){}
 

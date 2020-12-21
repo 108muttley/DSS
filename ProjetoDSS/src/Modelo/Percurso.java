@@ -4,23 +4,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Percurso {
-    private String codPalete;
+    //private String codPalete;
     private List<GPS> recolha;
-    private List<GPS> entrega;
+    private int distancia;
+    //private List<GPS> entrega;
 
 
-    public Percurso(List<GPS> recolha, List<GPS> entrega) {
+    public Percurso(List<GPS> recolha, int distancia) {
         this.recolha = recolha;
-        this.entrega = entrega;
+        this.distancia = distancia;
+        //this.entrega = entrega;
     }
 
     public Percurso(Percurso p){
         this.recolha = new ArrayList<>();
-        this.entrega = new ArrayList<>();
+        //this.entrega = new ArrayList<>();
         for(GPS g : p.getRecolha())
             this.recolha.add(g.clone());
-        for(GPS g : p.getEntrega())
-            this.entrega.add(g.clone());
+        this.distancia = p.getDistancia();
+        //for(GPS g : p.getEntrega())
+        //    this.entrega.add(g.clone());
     }
 
     public List<GPS> getRecolha() {
@@ -38,28 +41,22 @@ public class Percurso {
         }
         this.recolha = recolha;
     }
-    public List<GPS> getEntrega() {
-        List<GPS> novo = new ArrayList<>();
-        for (GPS gps : recolha ){
-            novo.add(gps.clone());
-        }
-        return recolha;
+
+    public int getDistancia(){
+        return this.distancia;
     }
 
-    public void setEntrega(List<GPS> recolha) {
-        List<GPS> novo = new ArrayList<>();
-        for (GPS gps : recolha ){
-            novo.add(gps.clone());
-        }
-        this.recolha = recolha;
-    }
+
 
     public Percurso clone(){
         return new Percurso(this);
     }
 
     public GPS getPontoDeEntrega(){
-        return this.entrega.get(this.entrega.size()-1);
+        return this.recolha.get(this.recolha.size()-1);
     }
 
+    public String toString(){
+        return this.recolha.toString() + " com distancia: " + this.distancia;
+    }
 }

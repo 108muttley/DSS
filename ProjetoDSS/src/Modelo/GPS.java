@@ -13,7 +13,8 @@ public class GPS {
     private int y;
 
 
-    public static double criaCaminho(List<GPS> mapa,GPS source, GPS destination, List<GPS> caminhoFinal){
+    public static Percurso criaCaminho(List<GPS> mapa,GPS source, GPS destination){
+        List<GPS> caminhoFinal = new ArrayList<>();
         double melhor = 99;
 
         double total = 0;
@@ -72,9 +73,8 @@ public class GPS {
                 }
             }
         }
-        System.out.println("melhor caminho encontrado com valor " + melhor + " e caminho :" + caminho);
-        caminhoFinal.addAll(caminho);
-        return melhor;
+        //System.out.println("melhor caminho encontrado com valor " + melhor + " e caminho :" + caminho);
+        return new Percurso(caminho, (int) melhor);
     }
 
     public static double dist2Pontos(GPS a, GPS b){
