@@ -43,14 +43,23 @@ public class Sistema {
         //this.mapa = GPS.criaMapa();
     }
 
-    public Boolean comunicaCodigoQR(String produto) {
-        String cod = geraCodigoQR();
-        this.paletes.put(cod, new Palete(cod, "0-0", produto));
-        this.paletesWaitingForDelivering.add(cod);
-        return true;
+    public boolean comunicaCodigoQR(String produto) {
+        String cod;
+        try {
+            do {
+                cod = geraCodigoQR();
+            } while (this.paletes.get(cod) != null);
+
+            this.paletes.put(cod, new Palete(cod, "0-0", produto));
+            this.paletesWaitingForDelivering.add(cod);
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
     }
 
-    public Boolean comunicaOrdemDeTransporte() {
+    public boolean comunicaOrdemDeTransporte() {
         if (this.paletesWaitingForDelivering.size() > 0) {
             String produtoATransportar = this.paletesWaitingForDelivering.get(0);
             String prateleira = getPrateleiraLivre();
@@ -63,7 +72,7 @@ public class Sistema {
     // ver qual o robot mais proximo
     // enviar-lhe o percurso de ir buscar a palete + o de entregar
     // robot comunicar que iniciou a entrega
-    public Boolean comunicaRobotMaisProximo(String codigoPalete, String prateleiraDestino){ // robot -> localizacao da palete -> destino
+    public boolean comunicaRobotMaisProximo(String codigoPalete, String prateleiraDestino){ // robot -> localizacao da palete -> destino
         if(!this.prateleiras.get(prateleiraDestino).isAvailable()) return false;
         List<GPS> pathFinal = new ArrayList<>();
         List<GPS> testar = new ArrayList<>();
@@ -115,7 +124,7 @@ public class Sistema {
         return null;
     }
 
-    public Boolean consultaListagem(){
+    public boolean consultaListagem(){
         for(String s : this.paletes.keySet()){
             Palete p = this.paletes.get(s);
             GPS coordenadas;

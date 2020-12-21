@@ -28,7 +28,7 @@ public class GPS {
         }
         else{
 
-            Boolean valid = false;
+            boolean valid = false;
             for(GPS temp : mapa){
                 //System.out.println("#############");
                 GPS back = source.clone();

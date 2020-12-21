@@ -12,10 +12,7 @@ public class TextUI {
 
     private Scanner sc;
 
-    private Boolean logged;
-
     public TextUI() {
-        this.logged = false;
         String[] opcoes = {
                 "Comunicar código QR", // 1
                 "Sistema: Comunicar Ordem de Transporte", // 2

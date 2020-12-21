@@ -69,7 +69,7 @@ public class Robot {
         //sistema.comunicaSistema("RobotRecolha",args);
     }
 
-    public Boolean doDelivering(Palete palete, Percurso percurso){
+    public boolean doDelivering(Palete palete, Percurso percurso){
         this.livre = false;
         List<GPS> aux = percurso.getEntrega();
         for(GPS g : aux){
