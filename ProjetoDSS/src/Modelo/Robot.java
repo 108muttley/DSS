@@ -7,22 +7,22 @@ import java.util.List;
 public class Robot {
     private String codRobot;
     private boolean livre;
-    private Palete palete;
+    private String codPalete;
     private GPS localizacao;
     //private Percurso percurso;
 
-    public Robot(String codRobot,GPS localizacao, boolean livre, Palete pal) {
+    public Robot(String codRobot,GPS localizacao, boolean livre, String pal) {
         this.codRobot = codRobot;
         setLocalizacao(localizacao);
         setLivre(livre);
-        setPalete(pal);
+        this.codPalete = pal;
     }
 
     public Robot(){
         this.codRobot = "";
         setLocalizacao(new GPS());
         setLivre(true);
-        setPalete(null);
+        setCodPalete(null);
     }
 
 
@@ -30,7 +30,7 @@ public class Robot {
         this.codRobot = r.getCod();
         setLocalizacao(r.getLocalizacao());
         setLivre(r.isAvailable());
-        setPalete(r.getPalete());
+        this.codPalete = r.getCodPalete();
     }
 
     public GPS getLocalizacao() {
@@ -49,24 +49,16 @@ public class Robot {
         this.livre = livre;
     }
 
-    public Palete getPalete() {
-        return palete;
+    public String getCodPalete() {
+        return this.codPalete;
     }
 
-    public void setPalete(Palete p) {
-        this.palete = p;
+    public void setCodPalete(String p) {
+        this.codPalete = p;
     }
 
     public String getCod(){
         return this.codRobot;
-    }
-
-    public void notificaSistemaRecolha(){
-        List<Object> args = new ArrayList<>();
-        args.add(this.codRobot); // Codigo de robot que está a comunicar
-        args.add(this.palete.getCodPalete()); // Codigo de palete
-        //args.add(this.percurso.getPontoDeEntrega()); // GPS
-        //sistema.comunicaSistema("RobotRecolha",args);
     }
 
 
@@ -81,7 +73,7 @@ public class Robot {
 
         //this.localizacao = percurso.getPontoDeEntrega();
         System.out.println("Robot: Transporte Feito com Sucesso");
-        this.palete = null;
+        this.codPalete = null;
         this.livre = true;
         return true;
     }
@@ -95,8 +87,8 @@ public class Robot {
         //System.out.println("Robot: Palete Recolhida com Sucesso");
 
         //this.localizacao = percurso.getPontoDeEntrega();
+        this.codPalete = palete.getCodPalete();
         System.out.println("Robot: Palete Recolhida com Sucesso");
-        this.palete = palete.clone();
         return true;
     }
 

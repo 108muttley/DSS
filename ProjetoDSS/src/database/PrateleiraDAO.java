@@ -1,9 +1,7 @@
 package database;
 
 import Modelo.GPS;
-import Modelo.Palete;
 import Modelo.Prateleira;
-import Modelo.Robot;
 
 import java.sql.*;
 import java.util.*;
@@ -19,6 +17,7 @@ public class PrateleiraDAO implements Map<String, Prateleira> {
                             "localizacao_x INT NOT NULL," +
                             "localizacao_y INT NOT NULL," +
                             "disponibilidade tinyint NOT NULL,"+
+                            "codPalete varchar(6) NULL,"+
                             "PRIMARY KEY (codPrateleira))";
                 stm.executeUpdate(sql);
         } catch (SQLException throwables) {
@@ -79,7 +78,7 @@ public class PrateleiraDAO implements Map<String, Prateleira> {
                 if(rs.next()){
                     //Verificar como fazer por causa do construtor da prateleira levar um boolean disponibilidade e um GPS localização
                     p = new Prateleira(rs.getString("codPrateleira"),rs.getInt("disponibilidade")==1,
-                            null,new GPS(rs.getInt("localizacao_x"),rs.getInt("localizacao_y")));
+                            rs.getString("codPalete"),new GPS(rs.getInt("localizacao_x"),rs.getInt("localizacao_y")));
                 }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -99,8 +98,9 @@ public class PrateleiraDAO implements Map<String, Prateleira> {
                     "VALUES ('"+p1.getCodPrateleira()+"', '" +
                     p1.getLocalizacao().getX()+"', '" +
                     p1.getLocalizacao().getY()+"', '" +
-                    d+"')" +
-                    "ON DUPLICATE KEY UPDATE disponibilidade=VALUES(disponibilidade)");
+                    d+"', " +
+                    "'"+p1.getCodPalete()+"')"+
+                    "ON DUPLICATE KEY UPDATE disponibilidade=VALUES(disponibilidade),codPalete=VALUES(codPalete)");
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -179,19 +179,20 @@ public class PrateleiraDAO implements Map<String, Prateleira> {
             String sql = "INSERT INTO Prateleira (codPrateleira, " +
                     "localizacao_x, " +
                     "localizacao_y," +
-                    "disponibilidade)" +
-                    "VALUES ('0-0',0,0,1)," +
-                    "('P01',5,0,1)," +
-                    "('P02',10,0,1)," +
-                    "('P06',5,5,1)," +
-                    "('P03',15,0,1)," +
-                    "('P07',10,5,1)," +
-                    "('P04',20,0,1)," +
-                    "('P08',15,5,1)," +
-                    "('P05',25,0,1)," +
-                    "('P09',20,5,1)," +
-                    "('P10',25,5,1)," +
-                    "('e-e',28,3,1)" +
+                    "disponibilidade," +
+                    "codPalete)" +
+                    "VALUES ('0-0',0,0,1,'null')," +
+                    "('P01',5,0,1,'null')," +
+                    "('P02',10,0,1,'null')," +
+                    "('P06',5,5,1,'null')," +
+                    "('P03',15,0,1,'null')," +
+                    "('P07',10,5,1,'null')," +
+                    "('P04',20,0,1,'null')," +
+                    "('P08',15,5,1,'null')," +
+                    "('P05',25,0,1,'null')," +
+                    "('P09',20,5,1,'null')," +
+                    "('P10',25,5,1,'null')," +
+                    "('e-e',28,3,1,'null')" +
                     "ON DUPLICATE KEY UPDATE codPrateleira=VALUES(codPrateleira)";
                     //"localizacao_x=VALUES(localizacao_x), " +
                     //"localizacao_y=VALUES(localizacao_y)";

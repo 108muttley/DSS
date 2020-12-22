@@ -135,7 +135,7 @@ public class GPS {
 
     @Override
     public String toString() {
-        return "Modelo.GPS{" +
+        return "GPS{" +
                 "x=" + x +
                 ", y=" + y +
                 '}';

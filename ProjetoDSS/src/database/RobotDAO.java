@@ -17,6 +17,7 @@ public class RobotDAO implements Map<String, Robot> {
                                 "localizacao_x INT NOT NULL," +
                                 "localizacao_y INT NOT NULL," +
                                 "disponibilidade TINYINT NOT NULL," +
+                                "codPalete varchar(6) NULL,"+
                                 "PRIMARY KEY (codRobot))";
                 stm.executeUpdate(sql);
         } catch (SQLException throwables) {
@@ -75,7 +76,7 @@ public class RobotDAO implements Map<String, Robot> {
             ResultSet rs = stm.executeQuery("SELECT * FROM Robot WHERE codRobot = '"+key.toString()+"' ")) {
                 if(rs.next()){
                     // Ver construtor por causa das paletes
-                    r = new Robot(rs.getString("codRobot"),new GPS(rs.getInt("localizacao_x"),rs.getInt("localizacao_y")),rs.getInt("disponibilidade")==1,null);
+                    r = new Robot(rs.getString("codRobot"),new GPS(rs.getInt("localizacao_x"),rs.getInt("localizacao_y")),rs.getInt("disponibilidade")==1,rs.getString("codPalete"));
                 }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -95,8 +96,9 @@ public class RobotDAO implements Map<String, Robot> {
                     "VALUES ('"+r1.getCod()+"', " +
                     "'"+r1.getLocalizacao().getX()+"', " +
                     "'"+r1.getLocalizacao().getY()+"', " +
-                    "'"+d+"')"+
-                    "ON DUPLICATE KEY UPDATE localizacao_x=VALUES(localizacao_x), localizacao_y=VALUES(localizacao_y), disponibilidade=VALUES(disponibilidade)");
+                    "'"+d+"', " +
+                    "'"+r1.getCodPalete()+"')"+
+                    "ON DUPLICATE KEY UPDATE localizacao_x=VALUES(localizacao_x), localizacao_y=VALUES(localizacao_y), disponibilidade=VALUES(disponibilidade),codPalete=VALUES(codPalete)");
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -175,10 +177,11 @@ public class RobotDAO implements Map<String, Robot> {
             String sql = "INSERT INTO Robot (codRobot, " +
                     "localizacao_x, " +
                     "localizacao_y," +
-                    "disponibilidade)" +
-                    "VALUES ('R01',5,5,1)," +
-                    "('R02',10,5,1)," +
-                    "('R03',25,0,1)" +
+                    "disponibilidade," +
+                    "codPalete)" +
+                    "VALUES ('R01',5,5,1,'null')," +
+                    "('R02',10,5,1,'null')," +
+                    "('R03',25,0,1,'null')" +
                     "ON DUPLICATE KEY UPDATE codRobot=VALUES(codRobot)";
                     //"localizacao_x=VALUES(localizacao_x), " +
                     //"localizacao_y=VALUES(localizacao_y)";
