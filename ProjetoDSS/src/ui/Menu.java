@@ -1,9 +1,6 @@
 package ui;
 
-import java.util.Arrays;
-import java.util.InputMismatchException;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Menu {
     private static Scanner is = new Scanner(System.in);
@@ -13,6 +10,11 @@ public class Menu {
     public Menu(String[] opcoes){
         this.opcoes = Arrays.asList(opcoes);
         this.op = 0;
+    }
+
+    public Menu(List<String> opcoes){
+        this.opcoes = new ArrayList<>();
+        this.opcoes.addAll(opcoes);
     }
 
     public void executa(){

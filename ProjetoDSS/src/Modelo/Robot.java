@@ -34,7 +34,7 @@ public class Robot {
     }
 
     public GPS getLocalizacao() {
-        return this.localizacao;
+        return this.localizacao.clone();
     }
 
     public void setLocalizacao(GPS localizacao) {
@@ -71,7 +71,7 @@ public class Robot {
 
 
     // falta saber se é preciso atualizar a localização na database
-    public boolean doDelivering(Palete palete, Percurso percurso){
+    public boolean doDelivering(Percurso percurso){
         List<GPS> aux = percurso.getRecolha();
         for(GPS g : aux){
             this.localizacao = g.clone();
@@ -86,7 +86,7 @@ public class Robot {
         return true;
     }
 
-    public boolean doRecolha(Percurso percurso){
+    public boolean doRecolha(Percurso percurso, Palete palete){
         List<GPS> aux = percurso.getRecolha();
         for(GPS g : aux){
             this.localizacao = g.clone();
@@ -96,7 +96,7 @@ public class Robot {
 
         //this.localizacao = percurso.getPontoDeEntrega();
         System.out.println("Robot: Palete Recolhida com Sucesso");
-        //this.palete = palete;
+        this.palete = palete.clone();
         return true;
     }
 

@@ -176,10 +176,12 @@ public class RobotDAO implements Map<String, Robot> {
                     "localizacao_x, " +
                     "localizacao_y," +
                     "disponibilidade)" +
-                    "VALUES ('R01',5,5,1)" +
-                    "ON DUPLICATE KEY UPDATE codRobot=VALUES(codRobot), " +
-                    "localizacao_x=VALUES(localizacao_x), " +
-                    "localizacao_y=VALUES(localizacao_y)";
+                    "VALUES ('R01',5,5,1)," +
+                    "('R02',10,5,1)," +
+                    "('R03',25,0,1)" +
+                    "ON DUPLICATE KEY UPDATE codRobot=VALUES(codRobot)";
+                    //"localizacao_x=VALUES(localizacao_x), " +
+                    //"localizacao_y=VALUES(localizacao_y)";
             stm.executeUpdate(sql);
         } catch (SQLException throwables) {
             throwables.printStackTrace();

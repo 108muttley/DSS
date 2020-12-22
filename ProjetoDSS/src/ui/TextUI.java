@@ -65,12 +65,16 @@ public class TextUI {
     }
 
     public void notificarRecolhaDePaletes(){
-        if (!modelo.notificarRecolhaDePaletes()) {
+        if (!modelo.notificaRecolhaDePaletes()) {
             System.out.println("Something went wrong");
         }
     }
 
-    public void notificarEntregaDePaletes(){}
+    public void notificarEntregaDePaletes(){
+        if (!modelo.notificaEntregaDePaletes()) {
+            System.out.println("Something went wrong");
+        }
+    }
 
     public void consultarListagem(){
         if (!modelo.consultaListagem()) {

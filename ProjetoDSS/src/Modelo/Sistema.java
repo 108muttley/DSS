@@ -3,6 +3,7 @@ package Modelo;
 import database.PaleteDAO;
 import database.PrateleiraDAO;
 import database.RobotDAO;
+import ui.Menu;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,11 +62,23 @@ public class Sistema {
 
     public boolean comunicaOrdemDeTransporte() {
         if (this.paletesWaitingForDelivering.size() > 0) {
-            String produtoATransportar = this.paletesWaitingForDelivering.get(0);
+            List<String> menuOptions = new ArrayList<>();
+            for(String s : this.paletesWaitingForDelivering){
+                menuOptions.add(s + ": " + this.paletes.get(s).getM());
+            }
+            Menu menu = new Menu(menuOptions);
+            int i;
+            menu.executa();
+            i = menu.getOpcao();
+            if(i <= 0){
+                return false;
+            }
+
+            String produtoATransportar = this.paletesWaitingForDelivering.get(i - 1);
             String prateleira = getPrateleiraLivre();
             Prateleira p = this.prateleiras.get(prateleira);
             p.setDisponibilidade(false);
-            this.prateleiras.put(p.getCodPrateleira(),p); // atualizar prateleira (disponibilidade - false)
+            this.prateleiras.put(p.getCodPrateleira(), p); // atualizar prateleira (disponibilidade - false)
             return comunicaRobotMaisProximo(produtoATransportar, prateleira);
         }
         return false;
@@ -101,6 +114,9 @@ public class Sistema {
         System.out.println(robotEscolhido);
         if (robotEscolhido.isEmpty()) {
             System.out.println("Não há robot disponível");
+            Prateleira p = this.prateleiras.get(prateleiraDestino);
+            p.setDisponibilidade(true);
+            this.prateleiras.put(prateleiraDestino,p); // voltar a atualizar prateleira
             return false;
         }
         Robot escolhido = this.robots.get(robotEscolhido);
@@ -113,7 +129,13 @@ public class Sistema {
 
     public String getPrateleiraLivre() { // busca uma prateleira livre
         for (String s : this.prateleiras.keySet()) {
-            if (this.prateleiras.get(s).isAvailable()) return s;
+            if (this.prateleiras.get(s).isAvailable() && !s.equals("0-0") && !s.equals("e-e")) return s;
+        }
+        return null;
+    }
+    public String getPrateleiraParaArmazenamento(){
+        for (String s : this.prateleiras.keySet()) {
+            if (!this.prateleiras.get(s).isAvailable() && this.prateleiras.get(s).getP() == null && !s.equals("0-0") && !s.equals("e-e")) return s;
         }
         return null;
     }
@@ -152,13 +174,13 @@ public class Sistema {
         return robotEscolhido;
     }
 
-    public String getRobotMaisProximoComDisponibilidade(GPS destino, boolean disponibilidade,Palete palete) {
+    public String getRobotMaisProximoComDisponibilidade(GPS destino, boolean disponibilidade, Palete palete) {
         String robotEscolhido = "";
         int maximo = 99;
         int atual;
         // Escolher o Robot mais próximo com uma certa disponibilidade
         for (String s : this.robots.keySet()) {
-            if (this.robots.get(s).isAvailable() == disponibilidade && this.robots.get(s).getPalete()==palete) {
+            if (this.robots.get(s).isAvailable() == disponibilidade && this.robots.get(s).getPalete() == palete) {
                 GPS inicio = this.robots.get(s).getLocalizacao();
                 if ((atual = GPS.criaCaminho(this.mapa, inicio, destino).getDistancia()) < maximo) { // encontrou novo robot mais proximo
                     robotEscolhido = s;
@@ -170,42 +192,88 @@ public class Sistema {
         return robotEscolhido;
     }
 
-    public boolean notificarRecolhaDePaletes() {
+    public boolean notificaRecolhaDePaletes() {
         // verificar se existe alguma palete para recolher
         // condição : tem de estar na base de dados, com localização 0 0, e não pode estar na lista
-        boolean condicao = false;
-        String palete_a_recolher = "";
+        // boolean condicao = false;
+        // String palete_a_recolher = "";
+        List<String > paletesARecolher = new ArrayList<>();
         for (String s : this.paletes.keySet()) {
             if (this.paletes.get(s).getLoc().equals("0-0") && !this.paletesWaitingForDelivering.contains(s)) {
-                palete_a_recolher = s;
-                condicao = true;
-                break;
+                //palete_a_recolher = s;
+                paletesARecolher.add(s + ": " + this.paletes.get(s).getM());
+                //condicao = true;
+                //break;
             }
         }
-        if (!condicao) {
+        if (paletesARecolher.isEmpty()) {
             System.out.println("Não há paletes para recolher");
             return false; // verifica se existe alguma palete à espera de transporte
         }
+        Menu menuDePaletes = new Menu(paletesARecolher);
+        menuDePaletes.executa();
+        int escolha = menuDePaletes.getOpcao();
+
+        if(escolha <= 0)
+            return false;
+        String aux = paletesARecolher.get(escolha-1);
+        String palete_a_recolher = aux.substring(0,aux.indexOf(":"));
+
 
         GPS rececao = new GPS(0, 0);
-        Robot r = this.robots.get(getRobotMaisProximoComDisponibilidade(rececao, false,null));
+        Robot r = this.robots.get(getRobotMaisProximoComDisponibilidade(rececao, false, null));
         if (!r.isAvailable() && r.getPalete() == null) {
             System.out.println("deu bem");
 
 
-            r.doRecolha(GPS.criaCaminho(this.mapa, r.getLocalizacao(), new GPS(0, 0)));
             Palete p = this.paletes.get(palete_a_recolher);
+            r.doRecolha(GPS.criaCaminho(this.mapa, r.getLocalizacao(), new GPS(0, 0)),p);
             p.setLoc(r.getCod()); // localização da palete passa a ser o robot
             this.paletes.put(palete_a_recolher, p); // atualizar palete (localização)
 
-            r.setPalete(p);
-            r.setLocalizacao(rececao);
-            this.robots.put(r.getCod(),r); // atualizar robot (localização + palete)
+            //r.setPalete(p);
+            //r.setLocalizacao(rececao);
+            this.robots.put(r.getCod(), r); // atualizar robot (localização + palete)
 
             return true;
         }
 
         return false;
+    }
+
+    public boolean notificaEntregaDePaletes(){
+        List<String> paletesAEntregar = new ArrayList<>();
+        for(String s : this.paletes.keySet()){
+            Palete p = this.paletes.get(s);
+            if(p.getLoc().startsWith("R")) {
+                paletesAEntregar.add(p.getLoc() +
+                        ": " + p.getCodPalete() +
+                        ", " + p.getM());
+            }
+        }
+        if(paletesAEntregar.isEmpty()){
+            System.out.println("Não há paletes para entregar");
+            return false;
+        }
+        Menu menuDePaletes = new Menu(paletesAEntregar);
+        menuDePaletes.executa();
+        int escolha = menuDePaletes.getOpcao();
+
+        if(escolha <= 0)
+            return false;
+        String aux = paletesAEntregar.get(escolha-1);
+        String codPalete = aux.substring(aux.indexOf(" ")+1,aux.indexOf(","));
+
+        String prateleira = getPrateleiraParaArmazenamento();
+
+        Robot robot = this.robots.get(this.paletes.get(codPalete).getLoc());
+
+        robot.doDelivering(GPS.criaCaminho(this.mapa,robot.getLocalizacao(),this.prateleiras.get(prateleira).getLocalizacao()));
+        Palete palete = this.paletes.get(codPalete);
+        palete.setLoc(prateleira);
+        this.paletes.put(codPalete,palete);
+        this.robots.put(robot.getCod(),robot);
+        return true;
     }
 
 

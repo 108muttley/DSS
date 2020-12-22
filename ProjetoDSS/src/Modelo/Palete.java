@@ -52,4 +52,8 @@ public class Palete {
     public void setM(String material) {
         this.material = material;
     }
+
+    public Palete clone(){
+        return new Palete(this);
+    }
 }

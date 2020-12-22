@@ -183,18 +183,18 @@ public class PrateleiraDAO implements Map<String, Prateleira> {
                     "VALUES ('0-0',0,0,1)," +
                     "('P01',5,0,1)," +
                     "('P02',10,0,1)," +
-                    "('P03',15,0,1)," +
-                    "('P04',20,0,1)," +
-                    "('P05',25,0,1)," +
                     "('P06',5,5,1)," +
+                    "('P03',15,0,1)," +
                     "('P07',10,5,1)," +
+                    "('P04',20,0,1)," +
                     "('P08',15,5,1)," +
+                    "('P05',25,0,1)," +
                     "('P09',20,5,1)," +
                     "('P10',25,5,1)," +
                     "('e-e',28,3,1)" +
-                    "ON DUPLICATE KEY UPDATE codPrateleira=VALUES(codPrateleira), " +
-                    "localizacao_x=VALUES(localizacao_x), " +
-                    "localizacao_y=VALUES(localizacao_y)";
+                    "ON DUPLICATE KEY UPDATE codPrateleira=VALUES(codPrateleira)";
+                    //"localizacao_x=VALUES(localizacao_x), " +
+                    //"localizacao_y=VALUES(localizacao_y)";
             stm.executeUpdate(sql);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
