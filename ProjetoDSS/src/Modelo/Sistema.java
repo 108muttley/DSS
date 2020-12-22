@@ -30,11 +30,17 @@ public class Sistema {
         PrateleiraDAO.povoa();
         RobotDAO.povoa();
 
+        List<String> paletesReservadas = new ArrayList<>();
+        for(String s : this.robots.keySet()){
+            if(!this.robots.get(s).getCodPalete().equals("null"))
+                paletesReservadas.add(this.robots.get(s).getCodPalete());
+        }
 
         this.paletesWaitingForDelivering = new ArrayList<>();
         if (this.paletes.size() > 0)
             for (String s : this.paletes.keySet()) {
-                if (this.paletes.get(s).getLoc().equals("0-0")) { // se estiver na receçao, adiciona 0-0 - receção
+                if (this.paletes.get(s).getLoc().equals("0-0") &&
+                !paletesReservadas.contains(s)) { // se estiver na receçao, adiciona 0-0 - receção
                     this.paletesWaitingForDelivering.add(s);
                 }
             }
@@ -121,6 +127,7 @@ public class Sistema {
         }
         Robot escolhido = this.robots.get(robotEscolhido);
         escolhido.setLivre(false);
+        escolhido.setCodPalete(codigoPalete); // robot fica "reservado"
         this.robots.put(robotEscolhido, escolhido); // atualizar robot (disponibilidade - false)
         this.paletesWaitingForDelivering.remove(codigoPalete); // remover palete da lista à espera de ser entregue
 
@@ -177,20 +184,11 @@ public class Sistema {
         return robotEscolhido;
     }
 
-    public String getRobotMaisProximoComDisponibilidade(GPS destino, boolean disponibilidade, String codPalete) {
+    public String getRobotReservado(String codPalete) {
         String robotEscolhido = "";
-        int maximo = 99;
-        int atual;
-        // Escolher o Robot mais próximo com uma certa disponibilidade
-        for (String s : this.robots.keySet()) {
-            if (this.robots.get(s).isAvailable() == disponibilidade && ((codPalete == null && this.robots.get(s).getCodPalete().equals("null")) || this.robots.get(s).getCodPalete().equals(codPalete))) {
-                GPS inicio = this.robots.get(s).getLocalizacao();
-                if ((atual = GPS.criaCaminho(this.mapa, inicio, destino).getDistancia()) < maximo) { // encontrou novo robot mais proximo
-                    robotEscolhido = s;
-                    maximo = atual;
 
-                }
-            }
+        for (String s : this.robots.keySet()) {
+            if(this.robots.get(s).getCodPalete().equals(codPalete)) return s;
         }
         return robotEscolhido;
     }
@@ -222,10 +220,8 @@ public class Sistema {
         String aux = paletesARecolher.get(escolha - 1);
         String palete_a_recolher = aux.substring(0, aux.indexOf(":"));
 
-
-        GPS rececao = new GPS(0, 0);
-        Robot r = this.robots.get(getRobotMaisProximoComDisponibilidade(rececao, false, null));
-        if (!r.isAvailable() && (r.getCodPalete() == null || r.getCodPalete().equals("null"))) {
+        Robot r = this.robots.get(getRobotReservado(palete_a_recolher));
+        if (!r.isAvailable() && (r.getCodPalete().equals(palete_a_recolher))) {
             System.out.println("deu bem");
 
 
