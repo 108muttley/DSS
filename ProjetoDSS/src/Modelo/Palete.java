@@ -1,7 +1,5 @@
 package Modelo;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class Palete {
     private String codPalete;
@@ -13,13 +11,6 @@ public class Palete {
         this.localizacao = localizacao;
         this.material = material;
 
-    }
-
-
-    public Palete() {
-        this.codPalete = "";
-        this.localizacao = "";
-        this.material = "";
     }
 
     public Palete(Palete p) {
@@ -53,7 +44,7 @@ public class Palete {
         this.material = material;
     }
 
-    public Palete clone(){
+    public Palete clone() {
         return new Palete(this);
     }
 }

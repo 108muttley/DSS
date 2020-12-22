@@ -1,12 +1,13 @@
 package ui;
 
 import Modelo.Sistema;
+import Modelo.SistemaFacade;
 
 import java.util.Scanner;
 
 public class TextUI {
 
-    private Sistema modelo;
+    private SistemaFacade modelo;
 
     private Menu menu;
 
@@ -49,36 +50,30 @@ public class TextUI {
         System.out.println("Saindo ...");
     }
 
-    // to do
     public void comunicarCodigoQR() {
         System.out.print("Insira o nome do Produto: ");
         String prod = sc.nextLine();
-        if (!modelo.comunicaCodigoQR(prod)) {
-            System.out.println("Something went wrong");
-        }
+        System.out.println(modelo.comunicaCodigoQR(prod));
     }
 
     public void comunicarOrdemDeTransporte() {
-        if (!modelo.comunicaOrdemDeTransporte()) {
-            System.out.println("Something went wrong");
-        }
+        System.out.println(modelo.comunicaOrdemDeTransporte());
     }
 
-    public void notificarRecolhaDePaletes(){
-        if (!modelo.notificaRecolhaDePaletes()) {
-            System.out.println("Something went wrong");
-        }
+    public void notificarRecolhaDePaletes() {
+        System.out.println(modelo.notificaRecolhaDePaletes());
     }
 
-    public void notificarEntregaDePaletes(){
-        if (!modelo.notificaEntregaDePaletes()) {
-            System.out.println("Something went wrong");
-        }
+    public void notificarEntregaDePaletes() {
+        System.out.println(modelo.notificaEntregaDePaletes());
     }
 
-    public void consultarListagem(){
-        if (!modelo.consultaListagem()) {
-            System.out.println("Something went wrong");
-        }
+    public void consultarListagem() {
+        String output;
+        if ((output = modelo.consultaListagem()).isEmpty()) {
+            System.out.println("Sistema:> Não existem Paletes no Sistema");
+        } else
+            System.out.println(output);
     }
+
 }

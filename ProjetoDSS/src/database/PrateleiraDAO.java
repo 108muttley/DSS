@@ -3,8 +3,15 @@ package database;
 import Modelo.GPS;
 import Modelo.Prateleira;
 
-import java.sql.*;
-import java.util.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class PrateleiraDAO implements Map<String, Prateleira> {
     private static PrateleiraDAO st = null;
@@ -178,7 +185,7 @@ public class PrateleiraDAO implements Map<String, Prateleira> {
 
     @Override
     public Set<Entry<String, Prateleira>> entrySet() {
-        return null;
+        throw new NullPointerException("public Set<Map.Entry<String,Prateleira>> entrySet() not implemented!");
     }
 
     public static void povoa() {
@@ -202,8 +209,6 @@ public class PrateleiraDAO implements Map<String, Prateleira> {
                     "('P10',25,5,1,NULL)," +
                     "('e-e',28,3,1,NULL)" +
                     "ON DUPLICATE KEY UPDATE codPrateleira=VALUES(codPrateleira)";
-            //"localizacao_x=VALUES(localizacao_x), " +
-            //"localizacao_y=VALUES(localizacao_y)";
             stm.executeUpdate(sql);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
