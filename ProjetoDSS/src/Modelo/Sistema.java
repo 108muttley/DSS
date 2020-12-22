@@ -32,7 +32,7 @@ public class Sistema {
 
         List<String> paletesReservadas = new ArrayList<>();
         for(String s : this.robots.keySet()){
-            if(!this.robots.get(s).getCodPalete().equals("null"))
+            if(this.robots.get(s).getCodPalete() != null)
                 paletesReservadas.add(this.robots.get(s).getCodPalete());
         }
 
@@ -143,7 +143,7 @@ public class Sistema {
 
     public String getPrateleiraParaArmazenamento() {
         for (String s : this.prateleiras.keySet()) {
-            if (!this.prateleiras.get(s).isAvailable() && this.prateleiras.get(s).getCodPalete().equals("null") && !s.equals("0-0") && !s.equals("e-e"))
+            if (!this.prateleiras.get(s).isAvailable() && this.prateleiras.get(s).getCodPalete() == null && !s.equals("0-0") && !s.equals("e-e"))
                 return s;
         }
         return null;
@@ -284,10 +284,9 @@ public class Sistema {
     }
 
     public void teste() {
-        System.out.println(GPS.criaCaminho(mapa, new GPS(0, 0), new GPS(15, 5)).toString());
-
-        System.out.println(GPS.criaCaminho(mapa, new GPS(0, 0), new GPS(4, 0)).toString());
-
+        GPS a = new GPS(10,5);
+        Robot r = new Robot("R01",a,true,null);
+        this.robots.put("R01",r);
 
     }
 

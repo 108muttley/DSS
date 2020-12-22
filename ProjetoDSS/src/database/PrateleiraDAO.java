@@ -7,26 +7,26 @@ import java.sql.*;
 import java.util.*;
 
 public class PrateleiraDAO implements Map<String, Prateleira> {
-    private static PrateleiraDAO st=null;
+    private static PrateleiraDAO st = null;
 
-    private PrateleiraDAO(){
-        try(Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
-            Statement stm = conn.createStatement()) {
-                String sql = "CREATE TABLE IF NOT EXISTS Prateleira (" +
-                            "codPrateleira varchar(5) NOT NULL," +
-                            "localizacao_x INT NOT NULL," +
-                            "localizacao_y INT NOT NULL," +
-                            "disponibilidade tinyint NOT NULL,"+
-                            "codPalete varchar(6) NULL,"+
-                            "PRIMARY KEY (codPrateleira))";
-                stm.executeUpdate(sql);
+    private PrateleiraDAO() {
+        try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
+             Statement stm = conn.createStatement()) {
+            String sql = "CREATE TABLE IF NOT EXISTS Prateleira (" +
+                    "codPrateleira varchar(5) NOT NULL," +
+                    "localizacao_x INT NOT NULL," +
+                    "localizacao_y INT NOT NULL," +
+                    "disponibilidade tinyint NOT NULL," +
+                    "codPalete varchar(6) NULL," +
+                    "PRIMARY KEY (codPrateleira))";
+            stm.executeUpdate(sql);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
     }
 
-    public static PrateleiraDAO getInstance(){
-        if(PrateleiraDAO.st==null) PrateleiraDAO.st = new PrateleiraDAO();
+    public static PrateleiraDAO getInstance() {
+        if (PrateleiraDAO.st == null) PrateleiraDAO.st = new PrateleiraDAO();
         return PrateleiraDAO.st;
     }
 
@@ -35,8 +35,8 @@ public class PrateleiraDAO implements Map<String, Prateleira> {
         int i = 0;
         try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
              Statement stm = conn.createStatement();
-             ResultSet rs = stm.executeQuery("SELECT count(*) FROM Prateleira") ) {
-            if (rs.next()){
+             ResultSet rs = stm.executeQuery("SELECT count(*) FROM Prateleira")) {
+            if (rs.next()) {
                 i = rs.getInt(1);
             }
         } catch (SQLException throwables) {
@@ -47,15 +47,15 @@ public class PrateleiraDAO implements Map<String, Prateleira> {
 
     @Override
     public boolean isEmpty() {
-        return (this.size()==0);
+        return (this.size() == 0);
     }
 
     @Override
     public boolean containsKey(Object key) {
         boolean r = false;
-        try(Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
-            Statement stm = conn.createStatement();
-            ResultSet rs = stm.executeQuery("SELECT codPrateleira FROM Prateleira WHERE codPrateleira='"+key.toString()+"'")) {
+        try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
+             Statement stm = conn.createStatement();
+             ResultSet rs = stm.executeQuery("SELECT codPrateleira FROM Prateleira WHERE codPrateleira='" + key.toString() + "'")) {
             r = rs.next();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -73,13 +73,13 @@ public class PrateleiraDAO implements Map<String, Prateleira> {
     public Prateleira get(Object key) {
         Prateleira p = null;
         try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
-            Statement stm = conn.createStatement();
-            ResultSet rs = stm.executeQuery("SELECT * FROM Prateleira WHERE codPrateleira='"+key.toString()+"'");) {
-                if(rs.next()){
-                    //Verificar como fazer por causa do construtor da prateleira levar um boolean disponibilidade e um GPS localização
-                    p = new Prateleira(rs.getString("codPrateleira"),rs.getInt("disponibilidade")==1,
-                            rs.getString("codPalete"),new GPS(rs.getInt("localizacao_x"),rs.getInt("localizacao_y")));
-                }
+             Statement stm = conn.createStatement();
+             ResultSet rs = stm.executeQuery("SELECT * FROM Prateleira WHERE codPrateleira='" + key.toString() + "'");) {
+            if (rs.next()) {
+                //Verificar como fazer por causa do construtor da prateleira levar um boolean disponibilidade e um GPS localização
+                p = new Prateleira(rs.getString("codPrateleira"), rs.getInt("disponibilidade") == 1,
+                        rs.getString("codPalete"), new GPS(rs.getInt("localizacao_x"), rs.getInt("localizacao_y")));
+            }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -89,19 +89,27 @@ public class PrateleiraDAO implements Map<String, Prateleira> {
     @Override
     public Prateleira put(String key, Prateleira p1) {
         Prateleira p2 = null;
-        try(Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
-            Statement stm = conn.createStatement()) {
+        try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
+             Statement stm = conn.createStatement()) {
             int d;
-            if(p1.isAvailable()) d = 1;
+            if (p1.isAvailable()) d = 1;
             else d = 0;
-            stm.executeUpdate("INSERT INTO Prateleira " +
-                    "VALUES ('"+p1.getCodPrateleira()+"', '" +
-                    p1.getLocalizacao().getX()+"', '" +
-                    p1.getLocalizacao().getY()+"', '" +
-                    d+"', " +
-                    "'"+p1.getCodPalete()+"')"+
-                    "ON DUPLICATE KEY UPDATE disponibilidade=VALUES(disponibilidade),codPalete=VALUES(codPalete)");
-
+            if (p1.getCodPalete() != null) {
+                stm.executeUpdate("INSERT INTO Prateleira " +
+                        "VALUES ('" + p1.getCodPrateleira() + "', '" +
+                        p1.getLocalizacao().getX() + "', '" +
+                        p1.getLocalizacao().getY() + "', '" +
+                        d + "', " +
+                        "'" + p1.getCodPalete() + "')" +
+                        "ON DUPLICATE KEY UPDATE disponibilidade=VALUES(disponibilidade),codPalete=VALUES(codPalete)");
+            } else {
+                stm.executeUpdate("INSERT INTO Prateleira " +
+                        "VALUES ('" + p1.getCodPrateleira() + "', '" +
+                        p1.getLocalizacao().getX() + "', '" +
+                        p1.getLocalizacao().getY() + "', '" +
+                        d + "', NULL )" +
+                        "ON DUPLICATE KEY UPDATE disponibilidade=VALUES(disponibilidade),codPalete=VALUES(codPalete)");
+            }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -111,9 +119,9 @@ public class PrateleiraDAO implements Map<String, Prateleira> {
     @Override
     public Prateleira remove(Object key) {
         Prateleira p = this.get(key);
-        try(Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
-            Statement stm = conn.createStatement();) {
-                stm.executeUpdate("DELETE FROM Prateleira WHERE codPrateleira = '"+key.toString()+"' ");
+        try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
+             Statement stm = conn.createStatement();) {
+            stm.executeUpdate("DELETE FROM Prateleira WHERE codPrateleira = '" + key.toString() + "' ");
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -122,13 +130,13 @@ public class PrateleiraDAO implements Map<String, Prateleira> {
 
     @Override
     public void putAll(Map<? extends String, ? extends Prateleira> prateleiras) {
-        for(Prateleira p : prateleiras.values()) this.put(p.getCodPrateleira(),p);
+        for (Prateleira p : prateleiras.values()) this.put(p.getCodPrateleira(), p);
     }
 
     @Override
     public void clear() {
         try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
-            Statement stm = conn.createStatement();) {
+             Statement stm = conn.createStatement();) {
             stm.execute("TRUNCATE Prateleira");
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -139,12 +147,12 @@ public class PrateleiraDAO implements Map<String, Prateleira> {
     public Set<String> keySet() {
         Set<String> res = new HashSet<>();
         try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
-            Statement stm = conn.createStatement();
-            ResultSet rs = stm.executeQuery("SELECT codPrateleira FROM Prateleira");) {
-                while(rs.next()){
-                    String idt = rs.getString("codPrateleira");
-                    res.add(idt);
-                }
+             Statement stm = conn.createStatement();
+             ResultSet rs = stm.executeQuery("SELECT codPrateleira FROM Prateleira");) {
+            while (rs.next()) {
+                String idt = rs.getString("codPrateleira");
+                res.add(idt);
+            }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -154,14 +162,14 @@ public class PrateleiraDAO implements Map<String, Prateleira> {
     @Override
     public Collection<Prateleira> values() {
         Collection<Prateleira> res = new HashSet<>();
-        try(Connection conn = DriverManager.getConnection(DAOconfig.URL,DAOconfig.USERNAME, DAOconfig.PASSWORD);
-            Statement stm = conn.createStatement();
-            ResultSet rs = stm.executeQuery("SELECT codPrateleira FROM Prateleira");) {
-                while(rs.next()){
-                    String idt = rs.getString("codPrateleira");
-                    Prateleira p = this.get(idt);
-                    res.add(p);
-                }
+        try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
+             Statement stm = conn.createStatement();
+             ResultSet rs = stm.executeQuery("SELECT codPrateleira FROM Prateleira");) {
+            while (rs.next()) {
+                String idt = rs.getString("codPrateleira");
+                Prateleira p = this.get(idt);
+                res.add(p);
+            }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -173,29 +181,29 @@ public class PrateleiraDAO implements Map<String, Prateleira> {
         return null;
     }
 
-    public static void povoa(){
-        try(Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
-            Statement stm = conn.createStatement()) {
+    public static void povoa() {
+        try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
+             Statement stm = conn.createStatement()) {
             String sql = "INSERT INTO Prateleira (codPrateleira, " +
                     "localizacao_x, " +
                     "localizacao_y," +
                     "disponibilidade," +
                     "codPalete)" +
-                    "VALUES ('0-0',0,0,1,'null')," +
-                    "('P01',5,0,1,'null')," +
-                    "('P02',10,0,1,'null')," +
-                    "('P06',5,5,1,'null')," +
-                    "('P03',15,0,1,'null')," +
-                    "('P07',10,5,1,'null')," +
-                    "('P04',20,0,1,'null')," +
-                    "('P08',15,5,1,'null')," +
-                    "('P05',25,0,1,'null')," +
-                    "('P09',20,5,1,'null')," +
-                    "('P10',25,5,1,'null')," +
-                    "('e-e',28,3,1,'null')" +
+                    "VALUES ('0-0',0,0,1,NULL)," +
+                    "('P01',5,0,1,NULL)," +
+                    "('P02',10,0,1,NULL)," +
+                    "('P06',5,5,1,NULL)," +
+                    "('P03',15,0,1,NULL)," +
+                    "('P07',10,5,1,NULL)," +
+                    "('P04',20,0,1,NULL)," +
+                    "('P08',15,5,1,NULL)," +
+                    "('P05',25,0,1,NULL)," +
+                    "('P09',20,5,1,NULL)," +
+                    "('P10',25,5,1,NULL)," +
+                    "('e-e',28,3,1,NULL)" +
                     "ON DUPLICATE KEY UPDATE codPrateleira=VALUES(codPrateleira)";
-                    //"localizacao_x=VALUES(localizacao_x), " +
-                    //"localizacao_y=VALUES(localizacao_y)";
+            //"localizacao_x=VALUES(localizacao_x), " +
+            //"localizacao_y=VALUES(localizacao_y)";
             stm.executeUpdate(sql);
         } catch (SQLException throwables) {
             throwables.printStackTrace();

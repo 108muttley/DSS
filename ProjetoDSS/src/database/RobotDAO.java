@@ -92,14 +92,23 @@ public class RobotDAO implements Map<String, Robot> {
             int d;
             if(r1.isAvailable()) d = 1;
             else d = 0;
-            stm.executeUpdate("INSERT INTO Robot " +
-                    "VALUES ('"+r1.getCod()+"', " +
-                    "'"+r1.getLocalizacao().getX()+"', " +
-                    "'"+r1.getLocalizacao().getY()+"', " +
-                    "'"+d+"', " +
-                    "'"+r1.getCodPalete()+"')"+
-                    "ON DUPLICATE KEY UPDATE localizacao_x=VALUES(localizacao_x), localizacao_y=VALUES(localizacao_y), disponibilidade=VALUES(disponibilidade),codPalete=VALUES(codPalete)");
+            if(r1.getCodPalete() != null) {
+                stm.executeUpdate("INSERT INTO Robot " +
+                        "VALUES ('" + r1.getCod() + "', " +
+                        "'" + r1.getLocalizacao().getX() + "', " +
+                        "'" + r1.getLocalizacao().getY() + "', " +
+                        "'" + d + "', " +
+                        "'" + r1.getCodPalete() + "')" +
+                        "ON DUPLICATE KEY UPDATE localizacao_x=VALUES(localizacao_x), localizacao_y=VALUES(localizacao_y), disponibilidade=VALUES(disponibilidade),codPalete=VALUES(codPalete)");
+            }
+            else {
+                    stm.executeUpdate("INSERT INTO Robot VALUES ('" + r1.getCod() + "', '" +
+                            r1.getLocalizacao().getX() + "', '" +
+                            r1.getLocalizacao().getY() + "', '" +
+                            d + "', NULL )" +
+                            "ON DUPLICATE KEY UPDATE localizacao_x=VALUES(localizacao_x), localizacao_y=VALUES(localizacao_y), disponibilidade=VALUES(disponibilidade),codPalete=VALUES(codPalete)");
 
+            }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -179,9 +188,9 @@ public class RobotDAO implements Map<String, Robot> {
                     "localizacao_y," +
                     "disponibilidade," +
                     "codPalete)" +
-                    "VALUES ('R01',5,5,1,'null')," +
-                    "('R02',10,5,1,'null')," +
-                    "('R03',25,0,1,'null')" +
+                    "VALUES ('R01',5,5,1,NULL)," +
+                    "('R02',10,5,1,NULL)," +
+                    "('R03',25,0,1,NULL)" +
                     "ON DUPLICATE KEY UPDATE codRobot=VALUES(codRobot)";
                     //"localizacao_x=VALUES(localizacao_x), " +
                     //"localizacao_y=VALUES(localizacao_y)";
