@@ -17,7 +17,10 @@ public class Sistema implements SistemaFacade {
     private List<String> paletesWaitingForDelivering;
     private List<GPS> mapa;
 
-
+    /**
+     * Construtor do Sistema, responsável por inicializar a base de dados e povoar as prateleiras e os robots
+     * e tudo o resto necessário ao bom funcionamento do programa
+     */
     public Sistema() {
         this.prateleiras = PrateleiraDAO.getInstance();
         this.paletes = PaleteDAO.getInstance();
@@ -42,6 +45,11 @@ public class Sistema implements SistemaFacade {
         this.mapa = GPS.criaMapa();
     }
 
+    /**
+     * Implementação do método que comunica ao sistema um código QR de uma palete
+     * @param produto Palete à qual vai ser atribuída um código
+     * @return Código QR atribuído à palete
+     */
     public String comunicaCodigoQR(String produto) {
         String cod;
         try {
@@ -59,6 +67,13 @@ public class Sistema implements SistemaFacade {
         }
     }
 
+    /**
+     * Implementação do método que procura um Robot de forma a realizar o transporte de uma palete e ao mesmo tempo uma prateleira onde armazená-la
+     * @return Mensagem de sucesso/erro
+     * @throws NoPaletesOnWaitingListException caso não haja paletes à espera de transporte
+     * @throws NoPrateleirasAvailableException caso não haja prateleiras disponíveis para armazenar
+     * @throws NoRobotAvailableException caso não haja robots disponíveis para transportar
+     */
     public String comunicaOrdemDeTransporte() throws NoPaletesOnWaitingListException, NoPrateleirasAvailableException, NoRobotAvailableException {
         if (this.paletesWaitingForDelivering.size() == 0)
             throw new NoPaletesOnWaitingListException("Sistema:> Não existem Paletes para Transporte!");
@@ -90,6 +105,14 @@ public class Sistema implements SistemaFacade {
     // ver qual o robot mais proximo
     // enviar-lhe o percurso de ir buscar a palete + o de entregar
     // robot comunicar que iniciou a entrega
+
+    /**
+     * Implementação do método que comunica ao sistema qual o robot mais próximo para efetuar determinada tarefa
+     * @param codigoPalete palete a averiguar a distância
+     * @param prateleiraDestino prateleira onde será armazenada a palete
+     * @return Mensagem com o código do Robot escolhido
+     * @throws NoRobotAvailableException caso não haja robots disponíveis
+     */
     public String comunicaRobotMaisProximo(String codigoPalete, String prateleiraDestino) throws NoRobotAvailableException { // robot -> localizacao da palete -> destino
         int minimo = 99;
         int atual;
@@ -122,6 +145,10 @@ public class Sistema implements SistemaFacade {
         return ("Sistema:> Robot Escolhido: " + robotEscolhido);
     }
 
+    /**
+     * Implementação do método que averigua qual a prateleira livre mais próxima
+     * @return Código da palete escolhida
+     */
     public String getPrateleiraLivre() { // busca uma prateleira livre
         String pEscolhida = "";
         int minimo = 99;
@@ -137,6 +164,10 @@ public class Sistema implements SistemaFacade {
         return pEscolhida;
     }
 
+    /**
+     * Implementação do método que averigua qual a prateleira onde será armazenada uma palete
+     * @return Código da prateleira onde será armazenada a palete
+     */
     public String getPrateleiraParaArmazenamento() {
         for (String s : this.prateleiras.keySet()) {
             if (!this.prateleiras.get(s).isAvailable() && this.prateleiras.get(s).getCodPalete() == null && !s.equals("0-0") && !s.equals("e-e"))
@@ -145,7 +176,11 @@ public class Sistema implements SistemaFacade {
         return null;
     }
 
-
+    /**
+     * Implementação do método que devolve o código do Robot atribuido ao transporte de uma palete
+     * @param codPalete Código da palete a averiguar
+     * @return Código do robot previamente designado ao transporte dessa palete
+     */
     public String getRobotReservado(String codPalete) {
         String robotEscolhido = "";
 
@@ -156,6 +191,12 @@ public class Sistema implements SistemaFacade {
         return robotEscolhido;
     }
 
+    /**
+     * Implementação do método designado a notificar o sistema que o robot já procedeu à recolha de uma palete
+     * @return Mensagem de sucesso/erro
+     * @throws NoPaletesToCollectException caso não haja paletes para recolha
+     * @throws NoRobotAvailableException caso não haja robots disponíveis
+     */
     public String notificaRecolhaDePaletes() throws NoPaletesToCollectException, NoRobotAvailableException {
         // verificar se existe alguma palete para recolher
         // condição : tem de estar na base de dados, com localização 0 0, e não pode estar na lista
@@ -192,6 +233,12 @@ public class Sistema implements SistemaFacade {
         }
     }
 
+    /**
+     * Implementação do método designado a notificar o sistema de que um robot já procedeu à entrega efetiva de uma palete
+     * @return Mensagem de sucesso/erro
+     * @throws NoPaletesToDeliverException caso não existam paletes para entregar
+     * @throws NoPrateleirasAvailableException caso não existam prateleiras disponíveis
+     */
     public String notificaEntregaDePaletes() throws NoPaletesToDeliverException, NoPrateleirasAvailableException {
         List<String> paletesAEntregar = new ArrayList<>();
         for (String s : this.paletes.keySet()) {
@@ -230,6 +277,11 @@ public class Sistema implements SistemaFacade {
         return output;
     }
 
+    /**
+     * Implementação do método que apresenta a lista com a informação sobre todas as paletes presentes no sistema
+     * @return Lista com a informação sobre as paletes
+     * @throws NoExistingPaletesException caso não existam paletes no sistema
+     */
     public String consultaListagem() throws NoExistingPaletesException {
         if(this.paletes.size()==0) throw new NoExistingPaletesException("Sistema:> Não existem Paletes no Sistema");
         StringBuilder output = new StringBuilder();

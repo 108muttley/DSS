@@ -14,6 +14,9 @@ public class TextUI {
 
     private Scanner sc;
 
+    /**
+     * Implementação do método que apresenta o menu inicial do programa
+     */
     public TextUI() {
         String[] opcoes = {
                 "Comunicar código QR", // 1
@@ -27,6 +30,9 @@ public class TextUI {
         this.sc = new Scanner(System.in);
     }
 
+    /**
+     * Implementação do método que corre o programa
+     */
     public void run() {
         do {
             menu.executa();
@@ -51,12 +57,18 @@ public class TextUI {
         System.out.println("Saindo ...");
     }
 
+    /**
+     * Implementação do método responsável por comunicar com o modelo para comunicarCodigoQR
+     */
     public void comunicarCodigoQR() {
         System.out.print("Insira o nome do Produto: ");
         String prod = sc.nextLine();
         System.out.println(modelo.comunicaCodigoQR(prod));
     }
 
+    /**
+     * Implementação do método responsável por comunicar com o modelo para comunicarOrdemDeTransporte
+     */
     public void comunicarOrdemDeTransporte() {
         try {
             System.out.println(modelo.comunicaOrdemDeTransporte());
@@ -66,6 +78,9 @@ public class TextUI {
         }
     }
 
+    /**
+     * Implementação do método responsável por comunicar com o modelo para notificarRecolhaDePaletes
+     */
     public void notificarRecolhaDePaletes() {
         try {
             System.out.println(modelo.notificaRecolhaDePaletes());
@@ -74,6 +89,9 @@ public class TextUI {
         }
     }
 
+    /**
+     * Implementação do método responsável por comunicar com o modelo para notificarEntregarDePaletes
+     */
     public void notificarEntregaDePaletes() {
         try {
             System.out.println(modelo.notificaEntregaDePaletes());
@@ -82,6 +100,9 @@ public class TextUI {
         }
     }
 
+    /**
+     * Implementação do método responsável por comunicar com o modelo para consultarListagem
+     */
     public void consultarListagem() {
         try {
             System.out.println(modelo.consultaListagem());

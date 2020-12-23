@@ -11,16 +11,27 @@ public class Menu {
     private List<String> opcoes;
     private int op;
 
+    /**
+     * Construtor do Menu
+     * @param opcoes Opções possíveis
+     */
     public Menu(String[] opcoes) {
         this.opcoes = Arrays.asList(opcoes);
         this.op = 0;
     }
 
+    /**
+     * Construtor do Menu
+     * @param opcoes Opções possíveis
+     */
     public Menu(List<String> opcoes) {
         this.opcoes = new ArrayList<>();
         this.opcoes.addAll(opcoes);
     }
 
+    /**
+     * Implementação do método responsável por interpretar a escolha do utilizador
+     */
     public void executa() {
         do {
             showMenu();
@@ -28,6 +39,9 @@ public class Menu {
         } while (this.op == -1);
     }
 
+    /**
+     * Implementação do método que apresenta o menu com todas as opções disponíveis
+     */
     private void showMenu() {
         System.out.println("\n <<< Menu >>>");
         for (int i = 0; i < this.opcoes.size(); i++) {
@@ -36,6 +50,10 @@ public class Menu {
         System.out.println("0 - Sair");
     }
 
+    /**
+     * Implementação do método responsável por interpretar a escolha feita pelo utilizador
+     * @return Escolha feita pelo utilizador
+     */
     private int lerOpcao() {
         int op;
 
@@ -53,6 +71,10 @@ public class Menu {
         return op;
     }
 
+    /**
+     * Implementação do método que devolve a escolha feita pelo utilizador.
+     * @return Opção escolhida
+     */
     public int getOpcao() {
         return this.op;
     }
