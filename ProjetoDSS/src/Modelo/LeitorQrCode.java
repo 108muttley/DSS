@@ -4,6 +4,10 @@ import java.util.Random;
 
 public class LeitorQrCode {
 
+    /**
+     * Implementação do método que gera um código de QR aleatório
+     * @return Código QR gerado
+     */
     public static String geraCodigoQR() {
         int leftLimit = 48; // numeral '0'
         int rightLimit = 122; // letter 'z'

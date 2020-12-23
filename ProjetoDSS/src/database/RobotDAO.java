@@ -16,6 +16,9 @@ import java.util.Set;
 public class RobotDAO implements Map<String, Robot> {
     private static RobotDAO st = null;
 
+    /**
+     * Construtor privado relativo à base de dados do Robot
+     */
     private RobotDAO() {
         try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
              Statement stm = conn.createStatement()) {
@@ -32,11 +35,19 @@ public class RobotDAO implements Map<String, Robot> {
         }
     }
 
+    /**
+     * Implementação do padrão Singleton (st)
+     * @return Instância única desta classe
+     */
     public static RobotDAO getInstance() {
         if (RobotDAO.st == null) RobotDAO.st = new RobotDAO();
         return RobotDAO.st;
     }
 
+    /**
+     * Implementação do cálculo do tamanho da instância, neste caso referente ao tamanho da tabela
+     * @return Número de Robots na base de dados
+     */
     public int size() {
         int i = 0;
         try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
@@ -52,10 +63,19 @@ public class RobotDAO implements Map<String, Robot> {
         return i;
     }
 
+    /**
+     * Implementação do método que averigua se a base de dados não tem nenhum Robot
+     * @return Valor lógico da afirmação (true se não existirem Robot)
+     */
     public boolean isEmpty() {
         return (this.size() == 0);
     }
 
+    /**
+     * Implementação do método que averigua se existe um dado Robot na base de dados através do seu código identificativo.
+     * @param key Código do Robot a averiguar
+     * @return Valor lógico da afirmação (true se existir a key que procuramos)
+     */
     public boolean containsKey(Object key) {
         boolean r = false;
         try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
@@ -69,12 +89,22 @@ public class RobotDAO implements Map<String, Robot> {
         return r;
     }
 
+    /**
+     * Implementação do método que averigua se existe um dado Robot na base de dados através do seu valor.
+     * @param value Robot a averiguar
+     * @return Valor lógico da afirmação (true se exisitir o Robot que procuramos)
+     */
     @Override
     public boolean containsValue(Object value) {
         Robot r = (Robot) value;
         return this.containsKey(r.getCod());
     }
 
+    /**
+     * Implementação do método que devolve um Robot a partir do seu código.
+     * @param key Código do Robot que pretendemos obter
+     * @return Robot pretendido
+     */
     @Override
     public Robot get(Object key) {
         Robot r = null;
@@ -90,6 +120,12 @@ public class RobotDAO implements Map<String, Robot> {
         return r;
     }
 
+    /**
+     * Implementação do método que insere na base de dados um dado Robot
+     * @param key Código do Robot a inserir na base de dados
+     * @param r1 Valor do Robot a inserir na base de dados
+     * @return null
+     */
     @Override
     public Robot put(String key, Robot r1) {
         Robot r2 = null;
@@ -120,6 +156,11 @@ public class RobotDAO implements Map<String, Robot> {
         return r2;
     }
 
+    /**
+     * Implementação do método que remove da base de dados um dado Robot
+     * @param key Código do Robot que pretendemos remover
+     * @return Robot removido
+     */
     @Override
     public Robot remove(Object key) {
         Robot r = this.get(key);
@@ -132,11 +173,18 @@ public class RobotDAO implements Map<String, Robot> {
         return r;
     }
 
+    /**
+     * Implementação do método que adiciona um conjunto de Robot à base de dados
+     * @param robots Conjunto de Robot a adicionar
+     */
     @Override
     public void putAll(Map<? extends String, ? extends Robot> robots) {
         for (Robot r : robots.values()) this.put(r.getCod(), r);
     }
 
+    /**
+     * Implementação do método que elimina todos os dados referentes a Robots da base de dados, isto é, limpa a sua tabela
+     */
     @Override
     public void clear() {
         try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
@@ -147,6 +195,10 @@ public class RobotDAO implements Map<String, Robot> {
         }
     }
 
+    /**
+     * Implementação do método que devolve todos os códigos de Robot existentes na base de dados
+     * @return Conjunto com os códigos de Robot
+     */
     @Override
     public Set<String> keySet() {
         Set<String> res = new HashSet<>();
@@ -163,6 +215,10 @@ public class RobotDAO implements Map<String, Robot> {
         return res;
     }
 
+    /**
+     * Implementação do método que devolve todos os valores de Robot existentes na base de dados
+     * @return Coleção com os Robots
+     */
     @Override
     public Collection<Robot> values() {
         Collection<Robot> res = new HashSet<>();
@@ -180,11 +236,19 @@ public class RobotDAO implements Map<String, Robot> {
         return res;
     }
 
+    /**
+     * Método não implementado, deveria retornar um conjunto com as Entrys do map referente à base de dados
+     * contendo o código e o valor de cada Robot existente
+     * @return Nothing
+     */
     @Override
     public Set<Entry<String, Robot>> entrySet() {
         throw new NullPointerException("public Set<Map.Entry<String,Robot>> entrySet() not implemented!");
     }
 
+    /**
+     * Implementação de um método que faz a povoação inicial da tabela dos Robot
+     */
     public static void povoa() {
         try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
              Statement stm = conn.createStatement()) {
