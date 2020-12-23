@@ -77,7 +77,7 @@ public class TextUI {
     public void notificarEntregaDePaletes() {
         try {
             System.out.println(modelo.notificaEntregaDePaletes());
-        } catch (NoPaletesToDeliverException e) {
+        } catch (NoPaletesToDeliverException | NoPrateleirasAvailableException e) {
             System.out.println(e.getMessage());
         }
     }

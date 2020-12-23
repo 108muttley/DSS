@@ -10,7 +10,7 @@ public interface SistemaFacade {
 
     String notificaRecolhaDePaletes() throws NoPaletesToCollectException, NoRobotAvailableException;
 
-    String notificaEntregaDePaletes() throws NoPaletesToDeliverException;
+    String notificaEntregaDePaletes() throws NoPaletesToDeliverException, NoPrateleirasAvailableException;
 
     String consultaListagem() throws NoExistingPaletesException;
 }

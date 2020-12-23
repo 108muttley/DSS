@@ -192,7 +192,7 @@ public class Sistema implements SistemaFacade {
         }
     }
 
-    public String notificaEntregaDePaletes() throws NoPaletesToDeliverException {
+    public String notificaEntregaDePaletes() throws NoPaletesToDeliverException, NoPrateleirasAvailableException {
         List<String> paletesAEntregar = new ArrayList<>();
         for (String s : this.paletes.keySet()) {
             Palete p = this.paletes.get(s);
@@ -213,6 +213,9 @@ public class Sistema implements SistemaFacade {
         String codPalete = aux.substring(aux.indexOf(" ") + 1, aux.indexOf(","));
 
         String codprateleira = getPrateleiraParaArmazenamento();
+        if(codprateleira == null){
+            throw new NoPrateleirasAvailableException("Sistema:> Ocorreu um erro...");
+        }
         Prateleira prateleira = this.prateleiras.get(codprateleira);
         Robot robot = this.robots.get(this.paletes.get(codPalete).getLoc());
 
