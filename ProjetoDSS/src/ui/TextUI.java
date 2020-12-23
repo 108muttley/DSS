@@ -84,7 +84,7 @@ public class TextUI {
 
     public void consultarListagem() {
         try {
-            modelo.consultaListagem();
+            System.out.println(modelo.consultaListagem());
         } catch (NoExistingPaletesException e) {
             System.out.println(e.getMessage());
         }
