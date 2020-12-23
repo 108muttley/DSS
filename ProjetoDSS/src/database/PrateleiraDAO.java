@@ -16,6 +16,9 @@ import java.util.Set;
 public class PrateleiraDAO implements Map<String, Prateleira> {
     private static PrateleiraDAO st = null;
 
+    /**
+     * Construtor privado relativo à base de dados da Prateleira
+     */
     private PrateleiraDAO() {
         try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
              Statement stm = conn.createStatement()) {
@@ -32,11 +35,19 @@ public class PrateleiraDAO implements Map<String, Prateleira> {
         }
     }
 
+    /**
+     * Implementação do padrão Singleton (st)
+     * @return Instância única desta classe
+     */
     public static PrateleiraDAO getInstance() {
         if (PrateleiraDAO.st == null) PrateleiraDAO.st = new PrateleiraDAO();
         return PrateleiraDAO.st;
     }
 
+    /**
+     * Implementação do cálculo do tamanho da instância, neste caso referente ao tamanho da tabela
+     * @return Número de Prateleira na base de dados
+     */
     @Override
     public int size() {
         int i = 0;
@@ -52,11 +63,20 @@ public class PrateleiraDAO implements Map<String, Prateleira> {
         return i;
     }
 
+    /**
+     * Implementação do método que averigua se a base de dados não tem nenhuma Prateleira
+     * @return Valor lógico da afirmação (true se não existirem Prateleira)
+     */
     @Override
     public boolean isEmpty() {
         return (this.size() == 0);
     }
 
+    /**
+     * Implementação do método que averigua se existe uma dada Prateleira na base de dados através do seu código identificativo.
+     * @param key Código da Prateleira a averiguar
+     * @return Valor lógico da afirmação (true se existir a key que procuramos)
+     */
     @Override
     public boolean containsKey(Object key) {
         boolean r = false;
@@ -70,12 +90,22 @@ public class PrateleiraDAO implements Map<String, Prateleira> {
         return r;
     }
 
+    /**
+     * Implementação do método que averigua se existe uma dada Prateleira na base de dados através do seu valor.
+     * @param value Prateleira a averiguar
+     * @return Valor lógico da afirmação (true se exisitir a Prateleira que procuramos)
+     */
     @Override
     public boolean containsValue(Object value) {
         Prateleira p = (Prateleira) value;
         return this.containsKey(p.getCodPrateleira());
     }
 
+    /**
+     * Implementação do método que devolve uma Prateleira a partir do seu código.
+     * @param key Código da Prateleira que pretendemos obter
+     * @return Prateleira pretendida
+     */
     @Override
     public Prateleira get(Object key) {
         Prateleira p = null;
@@ -93,6 +123,12 @@ public class PrateleiraDAO implements Map<String, Prateleira> {
         return p;
     }
 
+    /**
+     * Implementação do método que insere na base de dados uma dada Prateleira
+     * @param key Código da Prateleira a inserir na base de dados
+     * @param p1 Valor da Prateleira a inserir na base de dados
+     * @return null
+     */
     @Override
     public Prateleira put(String key, Prateleira p1) {
         Prateleira p2 = null;
@@ -123,6 +159,11 @@ public class PrateleiraDAO implements Map<String, Prateleira> {
         return p2;
     }
 
+    /**
+     * Implementação do método que remove da base de dados uma dada Prateleira
+     * @param key Código da Prateleira que pretendemos remover
+     * @return Prateleira removida
+     */
     @Override
     public Prateleira remove(Object key) {
         Prateleira p = this.get(key);
@@ -135,11 +176,18 @@ public class PrateleiraDAO implements Map<String, Prateleira> {
         return p;
     }
 
+    /**
+     * Implementação do método que adiciona um conjunto de Prateleira à base de dados
+     * @param prateleiras Conjunto de Prateleira a adicionar
+     */
     @Override
     public void putAll(Map<? extends String, ? extends Prateleira> prateleiras) {
         for (Prateleira p : prateleiras.values()) this.put(p.getCodPrateleira(), p);
     }
 
+    /**
+     * Implementação do método que elimina todos os dados referentes a Prateleira da base de dados, isto é, limpa a sua tabela
+     */
     @Override
     public void clear() {
         try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
@@ -150,6 +198,10 @@ public class PrateleiraDAO implements Map<String, Prateleira> {
         }
     }
 
+    /**
+     * Implementação do método que devolve todos os códigos de Prateleira existentes na base de dados
+     * @return Conjunto com os códigos de Prateleira
+     */
     @Override
     public Set<String> keySet() {
         Set<String> res = new HashSet<>();
@@ -166,6 +218,10 @@ public class PrateleiraDAO implements Map<String, Prateleira> {
         return res;
     }
 
+    /**
+     * Implementação do método que devolve todos os valores de Prateleira existentes na base de dados
+     * @return Coleção com as Prateleira
+     */
     @Override
     public Collection<Prateleira> values() {
         Collection<Prateleira> res = new HashSet<>();
@@ -183,11 +239,19 @@ public class PrateleiraDAO implements Map<String, Prateleira> {
         return res;
     }
 
+    /**
+     * Método não implementado, deveria retornar um conjunto com as Entrys do map referente à base de dados
+     * contendo o código e o valor de cada Prateleira existente
+     * @return Nothing
+     */
     @Override
     public Set<Entry<String, Prateleira>> entrySet() {
         throw new NullPointerException("public Set<Map.Entry<String,Prateleira>> entrySet() not implemented!");
     }
 
+    /**
+     * Implementação de um método que faz a povoação inicial da tabela das Prateleira
+     */
     public static void povoa() {
         try (Connection conn = DriverManager.getConnection(DAOconfig.URL, DAOconfig.USERNAME, DAOconfig.PASSWORD);
              Statement stm = conn.createStatement()) {
