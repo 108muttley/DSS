@@ -1,12 +1,14 @@
 package ui;
 
+import Exceptions.*;
 import Modelo.Sistema;
+import Modelo.SistemaFacade;
 
 import java.util.Scanner;
 
 public class TextUI {
 
-    private Sistema modelo;
+    private SistemaFacade modelo;
 
     private Menu menu;
 
@@ -49,36 +51,43 @@ public class TextUI {
         System.out.println("Saindo ...");
     }
 
-    // to do
     public void comunicarCodigoQR() {
         System.out.print("Insira o nome do Produto: ");
         String prod = sc.nextLine();
-        if (!modelo.comunicaCodigoQR(prod)) {
-            System.out.println("Something went wrong");
-        }
+        System.out.println(modelo.comunicaCodigoQR(prod));
     }
 
     public void comunicarOrdemDeTransporte() {
-        if (!modelo.comunicaOrdemDeTransporte()) {
-            System.out.println("Something went wrong");
+        try {
+            System.out.println(modelo.comunicaOrdemDeTransporte());
+
+        } catch (NoPaletesOnWaitingListException | NoPrateleirasAvailableException | NoRobotAvailableException e) {
+            System.out.println(e.getMessage());
         }
     }
 
-    public void notificarRecolhaDePaletes(){
-        if (!modelo.notificaRecolhaDePaletes()) {
-            System.out.println("Something went wrong");
+    public void notificarRecolhaDePaletes() {
+        try {
+            System.out.println(modelo.notificaRecolhaDePaletes());
+        } catch (NoPaletesToCollectException | NoRobotAvailableException e) {
+            System.out.println(e.getMessage());
         }
     }
 
-    public void notificarEntregaDePaletes(){
-        if (!modelo.notificaEntregaDePaletes()) {
-            System.out.println("Something went wrong");
+    public void notificarEntregaDePaletes() {
+        try {
+            System.out.println(modelo.notificaEntregaDePaletes());
+        } catch (NoPaletesToDeliverException | NoPrateleirasAvailableException e) {
+            System.out.println(e.getMessage());
         }
     }
 
-    public void consultarListagem(){
-        if (!modelo.consultaListagem()) {
-            System.out.println("Something went wrong");
+    public void consultarListagem() {
+        try {
+            System.out.println(modelo.consultaListagem());
+        } catch (NoExistingPaletesException e) {
+            System.out.println(e.getMessage());
         }
     }
+
 }

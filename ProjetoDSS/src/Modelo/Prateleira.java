@@ -14,19 +14,8 @@ public class Prateleira {
         this.localizacao = localizacao;
     }
 
-    public Prateleira(String codPrateleira,  GPS localizacao) {
-        this.codPrateleira = codPrateleira;
-        this.disponibilidade = true;
-        this.codPalete = null;
-        this.localizacao = localizacao;
-    }
-
     public String getCodPrateleira() {
         return codPrateleira;
-    }
-
-    public void setCodPrateleira(String codPrateleira) {
-        this.codPrateleira = codPrateleira;
     }
 
     public boolean isAvailable() {
@@ -49,7 +38,4 @@ public class Prateleira {
         return localizacao;
     }
 
-    public void setLocalizacao(GPS localizacao) {
-        this.localizacao = localizacao;
-    }
 }

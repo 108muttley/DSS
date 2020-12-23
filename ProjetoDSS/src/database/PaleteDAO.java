@@ -3,7 +3,11 @@ package database;
 import Modelo.Palete;
 
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
@@ -91,7 +95,6 @@ public class PaleteDAO implements Map<String, Palete> {
         return p;
     }
 
-    //NÃO FEITA POR CAUSA DOS CONSTRUTORES
     @Override
     public Palete put(String key, Palete value) {
         Palete res = null;
@@ -176,6 +179,6 @@ public class PaleteDAO implements Map<String, Palete> {
 
     @Override
     public Set<Entry<String, Palete>> entrySet() {
-        return null;
+        throw new NullPointerException("public Set<Map.Entry<String,Palete>> entrySet() not implemented!");
     }
 }

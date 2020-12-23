@@ -13,8 +13,7 @@ public class GPS {
     private int y;
 
 
-    public static Percurso criaCaminho(List<GPS> mapa,GPS source, GPS destination){
-        List<GPS> caminhoFinal = new ArrayList<>();
+    public static Percurso criaCaminho(List<GPS> mapa, GPS source, GPS destination) {
         double melhor = 99;
 
         double total = 0;
@@ -22,72 +21,58 @@ public class GPS {
         List<GPS> tentativa = new ArrayList<>();
         List<GPS> caminho = new ArrayList<>();
 
-        if(source.getY() == destination.getY()){
+        if (source.getY() == destination.getY()) {
             caminho.add(destination.clone());
-            melhor = dist2Pontos(source,destination);
-            //System.out.println("caminho encontrado com valor " + total);
-        }
-        else{
+            melhor = dist2Pontos(source, destination);
+        } else {
 
             boolean valid = false;
-            for(GPS temp : mapa){
-                //System.out.println("#############");
+            for (GPS temp : mapa) {
                 GPS back = source.clone();
                 tentativa.add(source.clone());
-                if(temp.getY() == back.getY()) {
-                    //System.out.println(back.toString() + " -> " + temp.toString());
+                if (temp.getY() == back.getY()) {
                     total += dist2Pontos(back, temp);
                     tentativa.add(temp.clone());
                     back = temp.clone();
-                    for(GPS temp2 : mapa){
-                        if(temp2.getX() == back.getX() && temp2.getY() == destination.getY()){
-                            //System.out.println(back.toString() + " -> " + temp2.toString());
-                            total += dist2Pontos(back,temp2);
+                    for (GPS temp2 : mapa) {
+                        if (temp2.getX() == back.getX() && temp2.getY() == destination.getY()) {
+                            total += dist2Pontos(back, temp2);
                             tentativa.add(temp2.clone());
                             back = temp2.clone();
-                            total += dist2Pontos(back,destination);
+                            total += dist2Pontos(back, destination);
                             tentativa.add(destination.clone());
-                            //System.out.println(back.toString() + " -> " + destination.toString());
-                            //System.out.println(tentativa + " com total " + total);
                             valid = true;
                         }
                     }
                 }
-                if(!valid) {
+                if (!valid) {
                     total = 0;
                     tentativa = new ArrayList<>();
-                }
-                else {
-                    //System.out.println("1 caminho encontrado com valor " + total);
-                    if(total < melhor){
-                        //System.out.println("foi melhor");
+                } else {
+                    if (total < melhor) {
                         melhor = total;
-                        //System.out.println(melhor);
                         caminho = new ArrayList<>(tentativa);
-                        //System.out.println(tentativa);
-                        //System.out.println(caminho);
                     }
                     tentativa = new ArrayList<>();
-                    total=0;
+                    total = 0;
                     valid = false;
                 }
             }
         }
-        //System.out.println("melhor caminho encontrado com valor " + melhor + " e caminho :" + caminho);
         return new Percurso(caminho, (int) melhor);
     }
 
-    public static double dist2Pontos(GPS a, GPS b){
-        return sqrt(pow((a.getX()-b.getX()),2) + pow((a.getY()-b.getY()),2));
+    public static double dist2Pontos(GPS a, GPS b) {
+        return sqrt(pow((a.getX() - b.getX()), 2) + pow((a.getY() - b.getY()), 2));
     }
 
-    public static List<GPS> criaMapa(){
+    public static List<GPS> criaMapa() {
         List<GPS> mapa = new ArrayList<>();
-        mapa.add(new GPS(4,0));
-        mapa.add(new GPS(26,0));
-        mapa.add(new GPS(4,5));
-        mapa.add(new GPS(26,5));
-        mapa.add(new GPS(26,3));
+        mapa.add(new GPS(4, 0));
+        mapa.add(new GPS(26, 0));
+        mapa.add(new GPS(4, 5));
+        mapa.add(new GPS(26, 5));
+        mapa.add(new GPS(26, 3));
         return mapa;
     }
 
@@ -96,11 +81,12 @@ public class GPS {
         this.y = y;
     }
 
-    public GPS(){
+    public GPS() {
         setX(0);
         setY(0);
     }
-    public GPS(GPS g){
+
+    public GPS(GPS g) {
         setX(g.getX());
         setY(g.getY());
     }
@@ -121,7 +107,7 @@ public class GPS {
         this.y = y;
     }
 
-    public GPS clone(){
+    public GPS clone() {
         return new GPS(this);
     }
 
