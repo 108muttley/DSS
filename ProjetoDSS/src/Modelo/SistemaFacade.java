@@ -1,14 +1,16 @@
 package Modelo;
 
+import Exceptions.*;
+
 public interface SistemaFacade {
 
     String comunicaCodigoQR(String produto);
 
-    String comunicaOrdemDeTransporte();
+    String comunicaOrdemDeTransporte() throws NoPaletesOnWaitingListException, NoPrateleirasAvailableException, NoRobotAvailableException;
 
-    String notificaRecolhaDePaletes();
+    String notificaRecolhaDePaletes() throws NoPaletesToCollectException, NoRobotAvailableException;
 
-    String notificaEntregaDePaletes();
+    String notificaEntregaDePaletes() throws NoPaletesToDeliverException;
 
-    String consultaListagem();
+    String consultaListagem() throws NoExistingPaletesException;
 }

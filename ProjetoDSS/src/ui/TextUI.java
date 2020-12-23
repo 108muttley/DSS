@@ -1,5 +1,6 @@
 package ui;
 
+import Exceptions.*;
 import Modelo.Sistema;
 import Modelo.SistemaFacade;
 
@@ -57,23 +58,36 @@ public class TextUI {
     }
 
     public void comunicarOrdemDeTransporte() {
-        System.out.println(modelo.comunicaOrdemDeTransporte());
+        try {
+            System.out.println(modelo.comunicaOrdemDeTransporte());
+
+        } catch (NoPaletesOnWaitingListException | NoPrateleirasAvailableException | NoRobotAvailableException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public void notificarRecolhaDePaletes() {
-        System.out.println(modelo.notificaRecolhaDePaletes());
+        try {
+            System.out.println(modelo.notificaRecolhaDePaletes());
+        } catch (NoPaletesToCollectException | NoRobotAvailableException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public void notificarEntregaDePaletes() {
-        System.out.println(modelo.notificaEntregaDePaletes());
+        try {
+            System.out.println(modelo.notificaEntregaDePaletes());
+        } catch (NoPaletesToDeliverException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public void consultarListagem() {
-        String output;
-        if ((output = modelo.consultaListagem()).isEmpty()) {
-            System.out.println("Sistema:> Não existem Paletes no Sistema");
-        } else
-            System.out.println(output);
+        try {
+            modelo.consultaListagem();
+        } catch (NoExistingPaletesException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
 }
